@@ -12,10 +12,3 @@ export const Button = styled.span`
       ? "black"
       : "#ccc"};
 `;
-
-export const Icon = styled(({ className, ...rest }) => {
-  return <span className={`material-icons ${className}`} {...rest} />;
-})`
-  font-size: 20px;
-  vertical-align: text-bottom;
-`;

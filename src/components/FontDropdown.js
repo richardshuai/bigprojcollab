@@ -38,22 +38,16 @@ class FontDropdown extends Component {
 
   render() {
     return (
-      <span style={FontDropdownStyle}>
+      <div className="dropdown">
         <select value={this.getFontFamily()} onChange={this.onChange}>
           <option disabled hidden value="None" />
           <option value="Arial">Arial</option>
           <option value="Roboto">Roboto</option>
           <option value="Webdings">Webdings</option>
         </select>
-      </span>
+      </div>
     );
   }
 }
-
-const FontDropdownStyle = {
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  verticalAlign: "6px"
-};
 
 export default FontDropdown;

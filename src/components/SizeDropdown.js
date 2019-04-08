@@ -38,7 +38,7 @@ class SizeDropdown extends Component {
 
   render() {
     return (
-      <span style={SizeDropdownStyle}>
+      <span className="dropdown">
         <select value={this.getFontSize()} onChange={this.onChange}>
           <option disabled hidden value="None" />
           <option value="1">1</option>
@@ -53,11 +53,5 @@ class SizeDropdown extends Component {
     );
   }
 }
-
-const SizeDropdownStyle = {
-  paddingLeft: "20px",
-  paddingRight: "10px",
-  verticalAlign: "6px"
-};
 
 export default SizeDropdown;

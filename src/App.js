@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
 import Toolbar from "./components/Toolbar";
-import { Icon, Button } from "./components/Buttons";
+import { Button } from "./components/Buttons";
 import { findMarkHotkey } from "./components/Hotkeys";
 import { Editor, getEventTransfer } from "slate-react";
 import { Value } from "slate";
+import Icon from "@material-ui/core/Icon";
 import isUrl from "is-url";
 
 /* Plugins */
@@ -60,7 +61,7 @@ class App extends Component {
     }
     return (
       <div className="App">
-        <h3>Hello! Slate Text Editor</h3>
+        <h3>BigProj Text Editor</h3>
         <Toolbar
           renderMarkButton={this.renderMarkButton}
           renderBlockButton={this.renderBlockButton}
@@ -141,6 +142,8 @@ class App extends Component {
 
     switch (mark.type) {
       case "bold":
+        console.log("bold called");
+
         return <strong {...attributes}>{children}</strong>;
       case "italic":
         return <em {...attributes}>{children}</em>;
@@ -193,6 +196,20 @@ class App extends Component {
           </a>
         );
       }
+      case "comment": {
+        return (
+          <span
+            style={{ "background-color": "#09fe69" }}
+            onClick={this.onClickComment.bind(
+              this,
+              node.data.get("commentText")
+            )}
+            {...attributes}
+          >
+            {children}
+          </span>
+        );
+      }
       default:
         return next();
     }
@@ -206,10 +223,13 @@ class App extends Component {
 
     return (
       <Button
+        className="button"
         active={isActive}
         onMouseDown={event => this.onClickMark(event, type)}
       >
-        <Icon>{icon}</Icon>
+        <Icon className="button-icon" id={icon}>
+          {icon}
+        </Icon>
       </Button>
     );
   };
@@ -229,10 +249,13 @@ class App extends Component {
     const isActive = this.hasInline(type);
     return (
       <Button
+        className="button"
         active={isActive}
         onMouseDown={event => this.onClickInline(event, type)}
       >
-        <Icon>{icon}</Icon>{" "}
+        <Icon className="button-icon" id={icon}>
+          {icon}
+        </Icon>{" "}
       </Button>
     );
   };
@@ -247,6 +270,19 @@ class App extends Component {
     const { editor } = this;
     const { value } = editor;
 
+    if (type === "comment") {
+      if (this.hasInline("comment")) {
+        editor.unwrapInline("comment");
+      } else if (value.selection.isExpanded) {
+        const commentText = window.prompt("What would you like to comment?");
+
+        if (commentText == null) {
+          alert("Nothing was entered!");
+          return;
+        }
+        editor.wrapInline({ type: "comment", data: { commentText } });
+      }
+    }
     if (type === "link") {
       if (this.hasInline("link")) {
         editor.unwrapInline("link");
@@ -292,6 +328,10 @@ class App extends Component {
     window.open(href, "_blank");
   };
 
+  onClickComment = (commentText, event) => {
+    alert("Comment: " + commentText);
+  };
+
   /* Blocks */
   renderBlockButton = (type, icon) => {
     let isActive = this.hasBlock(type);
@@ -309,10 +349,13 @@ class App extends Component {
 
     return (
       <Button
+        className="button"
         active={isActive}
         onMouseDown={event => this.onClickBlock(event, type)}
       >
-        <Icon>{icon}</Icon>
+        <Icon className="button-icon" id={icon}>
+          {icon}
+        </Icon>
       </Button>
     );
   };
