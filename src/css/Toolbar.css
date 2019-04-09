@@ -1,0 +1,36 @@
+.Toolbar {
+  display: flex;
+  position: relative;
+  padding: 2px 5px;
+  border: 1px solid #000;
+  background-color: #eee;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding-top: 4px;
+  margin: 1px 2px 1px 2px;
+}
+
+.button .button-icon {
+  padding: 0;
+  font-size: 20px;
+}
+
+#format_underlined {
+  font-size: 17px;
+}
+
+#comment {
+  position: fixed;
+  color: #09fe69;
+  font-size: 150px;
+  bottom: 0;
+  right: 15px;
+}
+
+.dropdown {
+  padding: 0px 5px;
+}
