@@ -1,7 +1,7 @@
 import React from "react";
+import { app } from "../../../App";
 import { Button } from "../../Utils/Buttons";
 import Icon from "@material-ui/core/Icon";
-import { app } from "../../../App";
 
 const DEFAULT_NODE = "paragraph";
 

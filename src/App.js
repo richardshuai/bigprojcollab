@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import "./App.css";
 import Toolbar from "./components/Toolbar/Toolbar";
-import { Editor, getEventTransfer } from "slate-react";
+import { Editor } from "slate-react";
 import { Value } from "slate";
-
-import isUrl from "is-url";
 
 /* Handlers */
 import { renderMark } from "./components/Editor/RenderMark";
 import { renderNode } from "./components/Editor/RenderNode";
 import { onKeyDown } from "./components/Editor/OnKeyDown";
 import { onChange } from "./components/Editor/OnChange";
+import { onPaste } from "./components/Editor/OnPaste";
 
 /* Initial value */
 import initialValue from "./initialValue.json";
@@ -57,10 +56,10 @@ class App extends Component {
           <Editor
             spellCheck
             autoFocus
-            placeholder="Enter some rich text..."
+            placeholder="Enter some text..."
             value={this.state.value}
             ref={this.ref}
-            onPaste={this.onPaste}
+            onPaste={onPaste}
             onChange={onChange}
             onKeyDown={onKeyDown}
             renderMark={renderMark}
@@ -74,21 +73,6 @@ class App extends Component {
 
   /* Editor props */
   ref = editor => (this.editor = editor);
-
-  onPaste = (event, editor, next) => {
-    if (editor.value.selection.isCollapsed) return next();
-
-    const transfer = getEventTransfer(event);
-    const { type, text } = transfer;
-    if (type !== "text" && type !== "html") return next();
-    if (!isUrl(text)) return next();
-
-    if (this.hasInline("link")) {
-      editor.unwrapInline("link");
-    }
-
-    editor.command(this.wrapLink, text);
-  };
 }
 
 export default App;
