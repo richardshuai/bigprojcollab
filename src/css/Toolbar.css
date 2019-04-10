@@ -19,18 +19,6 @@
   font-size: 20px;
 }
 
-#format_underlined {
-  font-size: 17px;
-}
-
-#comment {
-  position: fixed;
-  color: #09fe69;
-  font-size: 150px;
-  bottom: 0;
-  right: 15px;
-}
-
 .dropdown {
   padding: 0px 5px;
 }
