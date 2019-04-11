@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import "./App.css";
+import { Value } from "slate";
+
 import Toolbar from "./components/Toolbar/Toolbar";
 import { Editor } from "slate-react";
-import { Value } from "slate";
+import CommentPanel from "./components/CommentPanel/CommentPanel.js";
+import Video from "./components/Video/Video.js";
 
 /* Handlers */
 import { renderMark } from "./components/Editor/RenderMark";
@@ -49,10 +52,11 @@ class App extends Component {
       return "Loading sockets...";
     }
     return (
-      <div className="App">
-        <h3>BigProj Text Editor</h3>
-        <Toolbar state={this.state} editor={this.editor} />
-        <div className="Editor">
+      <div className="app-container">
+        <div className="toolbar-container">
+          <Toolbar state={this.state} editor={this.editor} />
+        </div>
+        <div className="editor-container">
           <Editor
             spellCheck
             autoFocus
@@ -66,6 +70,12 @@ class App extends Component {
             renderNode={renderNode}
             plugins={plugins}
           />
+        </div>
+        <div className="comment-panel-container">
+          <CommentPanel />
+        </div>
+        <div className="video-container">
+          <Video />
         </div>
       </div>
     );

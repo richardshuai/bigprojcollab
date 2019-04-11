@@ -1,20 +1,39 @@
-html,
-body,
-#app,
-#app > div {
-  height: 100%;
-}
-
-.App {
-  width: 80%;
+.app-container {
   margin: auto;
-  display: flex;
-  flex-direction: column;
   text-align: left;
+  display: grid;
+  overflow-x: hidden;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
 }
 
-.Editor {
-  background-color: lightgrey;
+.toolbar-container {
+  grid-column: 1/6;
+  grid-row: 1;
+  float: bottom;
+  border: black 5px solid;
+}
+
+.editor-container {
+  grid-column: 2;
+  grid-row: 2/8;
+  float: right;
+  background-color: #eeeeee;
   height: 100%;
   justify-content: space-between;
+  border: black 5px solid;
+}
+
+.comment-panel-container {
+  grid-row: 2/8;
+  height: 100%;
+  border: black 5px solid;
+}
+
+.video-container {
+  grid-row: 2/8;
+
+  height: 100%;
+  border: black 5px solid;
 }

@@ -1,6 +1,6 @@
 .Toolbar {
   display: flex;
-  position: relative;
+  position: fixed;
   padding: 2px 5px;
   border: 1px solid #000;
   background-color: #eee;
