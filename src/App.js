@@ -68,6 +68,7 @@ class App extends Component {
             onKeyDown={onKeyDown}
             renderMark={renderMark}
             renderNode={renderNode}
+            onFocus={this.onFocus}
             plugins={plugins}
           />
         </div>

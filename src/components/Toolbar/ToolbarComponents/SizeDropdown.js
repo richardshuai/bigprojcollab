@@ -13,6 +13,7 @@ class SizeDropdown extends Component {
       type: "fontSize",
       data: { size: e.target.value }
     });
+    this.props.editor.focus();
   };
 
   hasSizeMark = () => {

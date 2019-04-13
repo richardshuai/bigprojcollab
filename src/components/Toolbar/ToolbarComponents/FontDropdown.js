@@ -13,6 +13,7 @@ class FontDropdown extends Component {
       type: "fontFamily",
       data: { font: e.target.value }
     });
+    this.props.editor.focus();
   };
 
   hasFontMark = () => {
