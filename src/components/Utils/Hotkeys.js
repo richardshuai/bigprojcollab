@@ -6,7 +6,8 @@ const Hotkeys = {
   "mod+u": "underlined",
   "mod+shift+7": "numbered-list",
   "mod+shift+8": "bulleted-list",
-  "mod+k": "link"
+  "mod+k": "link",
+  "mod+1": "comment"
 };
 
 export function findMarkHotkey(event) {
@@ -15,7 +16,6 @@ export function findMarkHotkey(event) {
     if (isKeyHotkey(hotkey)(event)) {
       hotkeyProps.containsKey = true;
       hotkeyProps.type = Hotkeys[hotkey];
-      console.log(Hotkeys[hotkey]);
     }
   }
   return hotkeyProps;

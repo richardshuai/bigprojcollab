@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
+import Comment from "./CommentPanelComponents/Comment";
 
-export class CommentPanel extends Component {
+class CommentPanel extends Component {
   render() {
+    console.log(this.props.comments.length);
     return (
       <div>
         <SortByDropdown />
+        {this.props.comments.map(comment => (
+          <Comment suggestion={comment.suggestion} />
+        ))}
       </div>
     );
   }

@@ -31,7 +31,8 @@ class App extends Component {
   state = {
     value: Value.fromJSON(initialValue),
     socket: "uninitialized",
-    response: false
+    response: false,
+    comments: []
   };
 
   componentDidMount() {
@@ -75,7 +76,7 @@ class App extends Component {
               />
             </div>
             <div className="comment-panel-container">
-              <CommentPanel />
+              <CommentPanel comments={this.state.comments} />
             </div>
             <div className="video-container">
               <Video />

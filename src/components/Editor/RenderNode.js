@@ -1,4 +1,5 @@
 import React from "react";
+import { app } from "../../App";
 
 export const renderNode = function(props, editor, next) {
   const { attributes, children, node } = props;
@@ -30,8 +31,8 @@ export const renderNode = function(props, editor, next) {
     case "comment": {
       return (
         <span
-          style={{ "background-color": "#09fe69" }}
-          onClick={onClickComment.bind(this, node.data.get("commentText"))}
+          style={{ backgroundColor: "#09fe69" }}
+          onClick={onClickComment.bind(this, node.data)}
           {...attributes}
         >
           {children}
@@ -46,10 +47,12 @@ export const renderNode = function(props, editor, next) {
 /* Helper functions */
 
 const onClickLink = function(href, event) {
-  console.log(event);
   window.open(href, "_blank");
 };
 
-const onClickComment = function(commentText, event) {
-  alert("Comment: " + commentText);
+const onClickComment = function(commentData, event) {
+  const suggestion = commentData.get("suggestion");
+  const start = commentData.get("start");
+  alert("Comment: " + suggestion);
+  app.editor.moveTo(start.path, start.offset);
 };
