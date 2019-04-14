@@ -1,5 +1,4 @@
 import React from "react";
-import { app } from "../../App";
 
 export const renderNode = function(props, editor, next) {
   const { attributes, children, node } = props;
@@ -17,6 +16,30 @@ export const renderNode = function(props, editor, next) {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
+    case "justify":
+      return (
+        <div align="justify" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-right":
+      return (
+        <div align="right" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-center":
+      return (
+        <div align="center" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-left":
+      return (
+        <div align="left" {...attributes}>
+          {children}
+        </div>
+      );
     case "link": {
       return (
         <a

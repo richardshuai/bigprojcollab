@@ -1,7 +1,5 @@
-import React from "react";
 import { getEventTransfer } from "slate-react";
 import isUrl from "is-url";
-import { app } from "../../App";
 
 export const onPaste = (event, editor, next) => {
   if (editor.value.selection.isCollapsed) return next();

@@ -7,7 +7,11 @@ const Hotkeys = {
   "mod+shift+7": "numbered-list",
   "mod+shift+8": "bulleted-list",
   "mod+k": "link",
-  "mod+1": "comment"
+  "mod+1": "comment",
+  "mod+shift+l": "align-left",
+  "mod+shift+e": "align-center",
+  "mod+shift+r": "align-right",
+  "mod+shift+j": "justify"
 };
 
 export function findMarkHotkey(event) {

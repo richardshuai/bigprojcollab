@@ -6,6 +6,7 @@ class Comment extends Component {
     return (
       <div>
         <h1 onClick={this.pointToComment}> {this.props.suggestion} </h1>
+        <h6 onClick={this.updateComment}> Update </h6>
       </div>
     );
   }
@@ -18,6 +19,11 @@ class Comment extends Component {
       .first();
     app.editor.focus();
     app.editor.moveToStartOfNode(target);
+  };
+
+  updateComment = () => {
+    const newSuggestion = window.prompt("Updated suggestion?");
+    this.props.suggestion = newSuggestion;
   };
 }
 
