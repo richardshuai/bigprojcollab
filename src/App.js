@@ -52,33 +52,37 @@ class App extends Component {
       return "Loading sockets...";
     }
     return (
-      <div className="app-container">
-        <div className="toolbar-container">
-          <Toolbar state={this.state} editor={this.editor} />
-        </div>
-        <div className="editor-container">
-          <Editor
-            spellCheck
-            autoFocus
-            placeholder="Enter some text..."
-            value={this.state.value}
-            ref={this.ref}
-            onPaste={onPaste}
-            onChange={onChange}
-            onKeyDown={onKeyDown}
-            renderMark={renderMark}
-            renderNode={renderNode}
-            onFocus={this.onFocus}
-            plugins={plugins}
-          />
-        </div>
-        <div className="comment-panel-container">
-          <CommentPanel />
-        </div>
-        <div className="video-container">
-          <Video />
-        </div>
-      </div>
+      <html lang="en">
+        <head />
+        <body>
+          <div className="app-container">
+            <div className="toolbar-container">
+              <Toolbar state={this.state} editor={this.editor} />
+            </div>
+            <div className="editor-container">
+              <Editor
+                spellCheck
+                autoFocus
+                placeholder="Enter some text..."
+                value={this.state.value}
+                ref={this.ref}
+                onPaste={onPaste}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                renderMark={renderMark}
+                renderNode={renderNode}
+                plugins={plugins}
+              />
+            </div>
+            <div className="comment-panel-container">
+              <CommentPanel />
+            </div>
+            <div className="video-container">
+              <Video />
+            </div>
+          </div>
+        </body>
+      </html>
     );
   }
 
