@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 
 export class CommentPanel extends Component {
   render() {
     return (
       <div>
-        <h3> CommentPanel </h3>
+        <SortByDropdown />
       </div>
     );
   }
