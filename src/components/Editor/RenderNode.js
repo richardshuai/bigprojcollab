@@ -39,6 +39,7 @@ export const renderNode = function(props, editor, next) {
         </span>
       );
     }
+
     default:
       return next();
   }
@@ -52,7 +53,5 @@ const onClickLink = function(href, event) {
 
 const onClickComment = function(commentData, event) {
   const suggestion = commentData.get("suggestion");
-  const start = commentData.get("start");
   alert("Comment: " + suggestion);
-  app.editor.moveTo(start.path, start.offset);
 };

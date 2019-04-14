@@ -4,12 +4,14 @@ import Comment from "./CommentPanelComponents/Comment";
 
 class CommentPanel extends Component {
   render() {
-    console.log(this.props.comments.length);
     return (
       <div>
         <SortByDropdown />
         {this.props.comments.map(comment => (
-          <Comment suggestion={comment.suggestion} />
+          <Comment
+            suggestion={comment.suggestion}
+            uniqueKey={comment.uniqueKey}
+          />
         ))}
       </div>
     );
