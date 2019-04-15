@@ -21,7 +21,7 @@ class CommentBox extends Component {
           <p
             class="card-text"
             style={{ color: "#aaaacc" }}
-            onclick={this.updateComment}
+            onClick={this.updateComment}
           >
             Update Comment
           </p>
