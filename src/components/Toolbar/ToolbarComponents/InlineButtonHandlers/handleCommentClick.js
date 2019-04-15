@@ -11,9 +11,11 @@ const handleCommentClick = async () => {
 
   if (hasInline("comment")) {
     editor.unwrapInline("comment");
+
     //TODO: Remove from CommentPanel
   } else if (value.selection.isExpanded) {
     const suggestion = window.prompt("What would you like to comment?");
+    const tag = [window.prompt("What tag would you like it to be?")];
     const selection = value.selection;
     const start = selection.start;
 
@@ -27,7 +29,7 @@ const handleCommentClick = async () => {
     const uniqueKey = KeyUtils.create();
 
     //Comment data
-    const data = { uniqueKey, suggestion, timeStamp, start, selection };
+    const data = { uniqueKey, suggestion, timeStamp, start, selection, tag };
     await editor.wrapInline({
       type: "comment",
       data: data,
@@ -40,8 +42,10 @@ const handleCommentClick = async () => {
 //Storing comments in app.state as comment data, not the nodes itself.
 const addComment = commentData => {
   const updatedComments = [...app.state.comments, commentData];
+
   //Sorting by reverse timestamp
   // updatedComments.sort((a, b) => b.timeStamp - a.timeStamp);
+
   //Sorting by document order
   updatedComments.sort(docOrderComparator);
   app.setState({ comments: updatedComments });

@@ -1,21 +1,42 @@
 import React, { Component } from "react";
 import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
-import Comment from "./CommentPanelComponents/Comment";
+import CommentBox from "./CommentPanelComponents/CommentBox";
+import FilterByDropdown from "./CommentPanelComponents/FilterByDropdown";
 
 class CommentPanel extends Component {
+  state = {
+    filterValue: "All"
+  };
+
   render() {
     return (
       <div>
-        <SortByDropdown />
-        {this.props.comments.map(comment => (
-          <Comment
-            suggestion={comment.suggestion}
-            uniqueKey={comment.uniqueKey}
-          />
-        ))}
+        {/* <SortByDropdown /> */}
+        <FilterByDropdown
+          filterValue={this.state.filterValue}
+          filterChange={this.filterChange}
+        />
+        <div>
+          {this.props.comments
+            .filter(
+              comment =>
+                comment.tag.includes(this.state.filterValue) ||
+                this.state.filterValue === "All"
+            )
+            .map(comment => (
+              <CommentBox
+                suggestion={comment.suggestion}
+                uniqueKey={comment.uniqueKey}
+              />
+            ))}
+        </div>
       </div>
     );
   }
+
+  filterChange = e => {
+    this.setState({ filterValue: e.target.value });
+  };
 }
 
 export default CommentPanel;

@@ -58,6 +58,7 @@ class App extends Component {
         <body>
           <div className="app-container">
             <div className="toolbar-container">
+              {/* Change this so it uses app instead of this.state? */}
               <Toolbar state={this.state} editor={this.editor} />
             </div>
             <div className="editor-container">

@@ -12,6 +12,7 @@ export class SortByDropdown extends Component {
     this.setState({
       text: "Sort By: " + property
     });
+
     if (property === "Time") {
       this.setState({
         time: "dropdown-item active",
@@ -34,6 +35,7 @@ export class SortByDropdown extends Component {
       });
     }
   };
+
   render() {
     return (
       <div class="dropdown">

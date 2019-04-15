@@ -79,4 +79,5 @@ export const onClickBlock = function(event, type) {
       editor.setBlocks("list-item").wrapBlock(type);
     }
   }
+  editor.focus();
 };
