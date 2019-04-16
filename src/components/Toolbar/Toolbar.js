@@ -35,6 +35,10 @@ class Toolbar extends Component {
         {renderBlockButton("block-quote", "format_quote")}
         {renderBlockButton("numbered-list", "format_list_numbered")}
         {renderBlockButton("bulleted-list", "format_list_bulleted")}
+        {renderBlockButton("align-left", "format_align_left")}
+        {renderBlockButton("align-center", "format_align_center")}
+        {renderBlockButton("align-right", "format_align_right")}
+        {renderBlockButton("justify", "format_align_justify")}
         {renderInlineButton("link", "link")}
         {renderInlineButton("comment", "comment")}
       </div>
@@ -43,7 +47,8 @@ class Toolbar extends Component {
 }
 
 Toolbar.propTypes = {
-  //app.state
+  state: PropTypes.object,
+  editor: PropTypes.object
 };
 
 export default Toolbar;
