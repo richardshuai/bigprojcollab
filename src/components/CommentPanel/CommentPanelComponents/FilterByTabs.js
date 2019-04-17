@@ -3,6 +3,27 @@ import CommentBox from "./CommentBox";
 
 class FilterByTabs extends Component {
   /* Bootstrap nav-tabs class that has tabs that filters comments*/
+  tabContent = a => {
+    switch (a) {
+      case "All":
+        return this.props.comments.map(comment => (
+          <CommentBox
+            suggestion={comment.suggestion}
+            uniqueKey={comment.uniqueKey}
+          />
+        ));
+      default:
+        return this.props.comments
+          .filter(comment => comment.tag.includes(a))
+          .map(comment => (
+            <CommentBox
+              suggestion={comment.suggestion}
+              uniqueKey={comment.uniqueKey}
+            />
+          ));
+    }
+  };
+
   render() {
     return (
       <div class="tagtabs">
@@ -68,12 +89,7 @@ class FilterByTabs extends Component {
             role="tabpanel"
             aria-labelledby="all-tab"
           >
-            {this.props.comments.map(comment => (
-              <CommentBox
-                suggestion={comment.suggestion}
-                uniqueKey={comment.uniqueKey}
-              />
-            ))}
+            {this.tabContent("All")}
           </div>
           <div
             class="tab-pane"
@@ -81,14 +97,7 @@ class FilterByTabs extends Component {
             role="tabpanel"
             aria-labelledby="grammar-tab"
           >
-            {this.props.comments
-              .filter(comment => comment.tag.includes("Grammar"))
-              .map(comment => (
-                <CommentBox
-                  suggestion={comment.suggestion}
-                  uniqueKey={comment.uniqueKey}
-                />
-              ))}
+            {this.tabContent("Grammar")}
           </div>
           <div
             class="tab-pane"
@@ -96,14 +105,7 @@ class FilterByTabs extends Component {
             role="tabpanel"
             aria-labelledby="theme-tab"
           >
-            {this.props.comments
-              .filter(comment => comment.tag.includes("Theme"))
-              .map(comment => (
-                <CommentBox
-                  suggestion={comment.suggestion}
-                  uniqueKey={comment.uniqueKey}
-                />
-              ))}
+            {this.tabContent("Theme")}
           </div>
           <div
             class="tab-pane"
@@ -111,14 +113,7 @@ class FilterByTabs extends Component {
             role="tabpanel"
             aria-labelledby="content-tab"
           >
-            {this.props.comments
-              .filter(comment => comment.tag.includes("Content"))
-              .map(comment => (
-                <CommentBox
-                  suggestion={comment.suggestion}
-                  uniqueKey={comment.uniqueKey}
-                />
-              ))}
+            {this.tabContent("Content")}
           </div>
         </div>
       </div>
