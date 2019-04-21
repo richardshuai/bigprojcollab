@@ -10,8 +10,6 @@ class CommentForm extends Component {
       comment: "",
       tags: []
     };
-    this.handleCommentChange = this.handleCommentChange.bind(this);
-    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
   retrieveCommentData = async () => {
@@ -59,20 +57,20 @@ class CommentForm extends Component {
     }
   };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     this.props.panel();
     this.retrieveCommentData();
-  }
-  handleCommentChange(event) {
+  };
+  handleCommentChange = event => {
     const target = event.target;
     const value = target.value;
 
     this.setState({
       comment: value
     });
-  }
-  handleCheckboxChange(event) {
+  };
+  handleCheckboxChange = event => {
     const target = event.target;
     const value = target.checked;
     const name = target.name;
@@ -82,7 +80,8 @@ class CommentForm extends Component {
         tags: [...prevState.tags, name]
       }));
     }
-  }
+  };
+
   render() {
     return (
       <div>
