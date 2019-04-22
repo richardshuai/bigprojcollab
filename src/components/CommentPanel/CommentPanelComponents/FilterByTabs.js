@@ -8,8 +8,8 @@ class FilterByTabs extends Component {
       case "All":
         return this.props.comments.map(comment => (
           <CommentBox
-            quoted={comment.quoted}
             suggestion={comment.suggestion}
+            quoted={comment.quoted}
             uniqueKey={comment.uniqueKey}
           />
         ));

@@ -21,9 +21,6 @@ export const renderInlineButton = function(type, icon) {
 };
 
 export const hasInline = function(type) {
-  if (type === "link") {
-    // console.log(JSON.stringify(app.state.value.inlines));
-  }
   return app.state.value.inlines.some(inline => inline.type === type);
 };
 

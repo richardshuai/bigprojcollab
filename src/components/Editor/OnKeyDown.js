@@ -1,6 +1,6 @@
 import { findMarkHotkey } from "../Utils/Hotkeys";
 import { app } from "../../App";
-import { Document } from "slate";
+import { Document, Range } from "slate";
 
 export const onKeyDown = async (event, editor, next) => {
   //Hotkey handling
@@ -20,9 +20,34 @@ export const onKeyDown = async (event, editor, next) => {
 
 const updateComment = () => {
   const { value } = app.state;
-  const currentInline = value.inlines.first();
-  const isInCommentData = isInComment(currentInline);
+  const { document } = value;
 
+  /* Below is a failed implementation of checking for edits at the 
+  margins of comments. It fails because moveBackward and moveForward don't
+  move across nodes. Possible fixes include turning to Mozilla's API or learning
+  more about Slate. */
+
+  // let effectiveRange;
+  // if (value.selection.isCollapsed) {
+  //   effectiveRange = Range.create({
+  //     anchor: value.selection.start.moveBackward(1),
+  //     focus: value.selection.end.moveForward(1)
+  //   });
+  //   app.editor.deleteAtRange(effectiveRange);
+  // } else {
+  //   effectiveRange = value.selection;
+  // }
+  // const currentInlines = document.getLeafInlinesAtRange(effectiveRange);
+
+  const currentInlines = document.getLeafInlinesAtRange(value.selection);
+
+  let currentInline;
+
+  if (currentInlines) {
+    currentInline = currentInlines.first();
+  }
+
+  const isInCommentData = isInComment(currentInline);
   if (isInCommentData.isInComment) {
     const { commentNode } = isInCommentData;
     const target = app.state.comments.filter(

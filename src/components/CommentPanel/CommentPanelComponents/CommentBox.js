@@ -7,7 +7,8 @@ class CommentBox extends Component {
     time: "date commented",
     quoted: "Highlighted Text",
     comment: "The Comment",
-    details: "tags, etc"
+    details: "tags, etc",
+    quotedCollapsed: true
   };
 
   render() {
@@ -16,7 +17,22 @@ class CommentBox extends Component {
         <div class="card-body">
           <h5 class="card-title">{this.state.creator} </h5>
           <h6 class="card-subtitle mb-2 text-muted">{this.state.time}</h6>
-          <p class="card-text">{this.props.quoted}</p>
+          <p class="card-text">
+            <em>
+              {this.state.quotedCollapsed
+                ? this.processCollapsed()
+                : this.props.quoted}
+            </em>
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            onClick={this.onClickQuotedCollapse}
+          >
+            {this.state.quotedCollapsed ? "Expand" : "Collapse"}
+          </button>
+
           <p class="card-text">{this.props.suggestion}</p>
           <p
             class="card-text"
@@ -45,6 +61,17 @@ class CommentBox extends Component {
   updateComment = event => {
     const newSuggestion = window.prompt("Updated suggestion?");
     this.props.suggestion = newSuggestion;
+  };
+
+  onClickQuotedCollapse = event => {
+    this.setState({ quotedCollapsed: !this.state.quotedCollapsed });
+  };
+
+  processCollapsed = () => {
+    if (this.props.quoted.length > 30) {
+      return this.props.quoted.slice(0, 30) + "...";
+    }
+    return this.props.quoted;
   };
 }
 
