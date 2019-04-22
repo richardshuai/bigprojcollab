@@ -8,6 +8,7 @@ class FilterByTabs extends Component {
       case "All":
         return this.props.comments.map(comment => (
           <CommentBox
+            quoted={comment.quoted}
             suggestion={comment.suggestion}
             uniqueKey={comment.uniqueKey}
           />
@@ -17,6 +18,7 @@ class FilterByTabs extends Component {
           .filter(comment => comment.tag.includes(a))
           .map(comment => (
             <CommentBox
+              quoted={comment.quoted}
               suggestion={comment.suggestion}
               uniqueKey={comment.uniqueKey}
             />

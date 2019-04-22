@@ -1,7 +1,7 @@
 import { app } from "../../App";
 
-export const onChange = ({ value }) => {
-  app.setState({ value: value }, () => {
-    app.state.socket.emit("userEdit", JSON.stringify(value.toJSON()));
+export const onChange = (event, editor, next) => {
+  app.setState({ value: event.value }, () => {
+    app.state.socket.emit("userEdit", JSON.stringify(event.value.toJSON()));
   });
 };

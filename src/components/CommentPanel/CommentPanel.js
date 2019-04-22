@@ -3,6 +3,7 @@ import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 import FilterByTabs from "./CommentPanelComponents/FilterByTabs";
 import CommentForm from "./CommentPanelComponents/CommentForm";
 export let panel;
+
 class CommentPanel extends Component {
   constructor(props) {
     super(props);
@@ -10,20 +11,20 @@ class CommentPanel extends Component {
     this.state = {
       commenting: false
     };
-    this.noneditable = this.noneditable.bind(this);
   }
 
-  noneditable() {
+  noneditable = () => {
     this.setState({
       commenting: false
     });
-  }
+  };
+
   render() {
     return (
       <div>
         {/* <SortByDropdown /> */}
         {this.state.commenting ? (
-          <CommentForm panel={this.noneditable} />
+          <CommentForm noneditable={this.noneditable} />
         ) : null}
         <FilterByTabs comments={this.props.comments} />
       </div>

@@ -24,9 +24,19 @@ class CommentForm extends Component {
     const date = new Date();
     const timeStamp = date.getTime();
     const uniqueKey = KeyUtils.create();
+    const quoted = value.fragment.text;
 
     //Comment data
-    const data = { uniqueKey, suggestion, timeStamp, start, selection, tag };
+    const data = {
+      quoted,
+      uniqueKey,
+      suggestion,
+      timeStamp,
+      start,
+      selection,
+      tag
+    };
+
     await editor.wrapInline({
       type: "comment",
       data: data,
@@ -34,6 +44,7 @@ class CommentForm extends Component {
     });
     this.addComment(data);
   };
+
   addComment = commentData => {
     const updatedComments = [...app.state.comments, commentData];
 
@@ -59,9 +70,10 @@ class CommentForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.panel();
+    this.props.noneditable();
     this.retrieveCommentData();
   };
+
   handleCommentChange = event => {
     const target = event.target;
     const value = target.value;

@@ -16,7 +16,7 @@ class CommentBox extends Component {
         <div class="card-body">
           <h5 class="card-title">{this.state.creator} </h5>
           <h6 class="card-subtitle mb-2 text-muted">{this.state.time}</h6>
-          <p class="card-text">{this.state.quoted}</p>
+          <p class="card-text">{this.props.quoted}</p>
           <p class="card-text">{this.props.suggestion}</p>
           <p
             class="card-text"

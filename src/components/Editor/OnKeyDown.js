@@ -1,35 +1,43 @@
 import { findMarkHotkey } from "../Utils/Hotkeys";
 import { app } from "../../App";
+import { Document } from "slate";
 
-export const onKeyDown = (event, editor, next) => {
+export const onKeyDown = async (event, editor, next) => {
   //Hotkey handling
   const hotkeyProps = findMarkHotkey(event);
+
   if (hotkeyProps.containsKey) {
     event.preventDefault();
     const type = hotkeyProps.type;
     document.getElementById(type).click();
   }
 
-  let comment;
-  const isInComment = app.state.value.inlines.some(inline => {
-    comment = inline;
-    return inline.type === "comment";
-  });
-
-  if (isInComment) {
-    console.log(comment.data.get("uniqueKey"));
-
-    // console.log(
-    //   JSON.stringify(
-    //     comment
-    //       .getLastText()
-    //       .get("leaves")
-    //       .first()
-    //       .get("text")
-    //   )
-    // );
-    //getInlinesByType
-  }
+  //Comment update handling
+  updateComment();
 
   return next();
+};
+
+const updateComment = () => {
+  const { value } = app.state;
+  const currentInline = value.inlines.first();
+  const isInCommentData = isInComment(currentInline);
+
+  if (isInCommentData.isInComment) {
+    const { commentNode } = isInCommentData;
+    const target = app.state.comments.filter(
+      data => data["uniqueKey"] === commentNode.data.get("uniqueKey")
+    )[0];
+    target.quoted = commentNode.text;
+  }
+};
+
+const isInComment = currNode => {
+  if (!currNode || Document.isDocument(currNode)) {
+    return { isInComment: false };
+  } else if (currNode.type === "comment") {
+    return { isInComment: true, commentNode: currNode };
+  } else {
+    return isInComment(app.state.value.document.getParent(currNode.key));
+  }
 };
