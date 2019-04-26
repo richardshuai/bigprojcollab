@@ -16,6 +16,30 @@ export const renderNode = function(props, editor, next) {
       return <li {...attributes}>{children}</li>;
     case "numbered-list":
       return <ol {...attributes}>{children}</ol>;
+    case "justify":
+      return (
+        <div align="justify" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-right":
+      return (
+        <div align="right" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-center":
+      return (
+        <div align="center" {...attributes}>
+          {children}
+        </div>
+      );
+    case "align-left":
+      return (
+        <div align="left" {...attributes}>
+          {children}
+        </div>
+      );
     case "link": {
       return (
         <a
@@ -30,14 +54,15 @@ export const renderNode = function(props, editor, next) {
     case "comment": {
       return (
         <span
-          style={{ "background-color": "#09fe69" }}
-          onClick={onClickComment.bind(this, node.data.get("commentText"))}
+          style={{ backgroundColor: "#09fe69" }}
+          onClick={onClickComment.bind(this, node.data)}
           {...attributes}
         >
           {children}
         </span>
       );
     }
+
     default:
       return next();
   }
@@ -46,10 +71,10 @@ export const renderNode = function(props, editor, next) {
 /* Helper functions */
 
 const onClickLink = function(href, event) {
-  console.log(event);
   window.open(href, "_blank");
 };
 
-const onClickComment = function(commentText, event) {
-  alert("Comment: " + commentText);
+const onClickComment = function(commentData, event) {
+  const suggestion = commentData.get("suggestion");
+  alert("Comment: " + suggestion);
 };
