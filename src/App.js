@@ -96,12 +96,13 @@ class App extends Component {
   /* Editor props */
   ref = editor => (this.editor = editor);
 
+  // Pasting comments is broken for some reason. Figure that out later.
   scanDocument = () => {
     const commentNodes = this.state.value.document.getInlinesByType("comment");
 
     // Updates comments array, create map for duplicates
     const updatedComments = [];
-    const keyToSameCommentMap = new Map();
+    const keyToSameCommentsMap = new Map();
 
     for (const node of commentNodes) {
       // Update start of comments for sorting
@@ -112,11 +113,11 @@ class App extends Component {
       // If a duplicate node is created (such as by line breaks), store in a map.
       // Push unique comments to commentsArray, and for now, just ignore the duplicate.
       const currKey = node.data.get("uniqueKey");
-      if (!keyToSameCommentMap.has(currKey)) {
-        keyToSameCommentMap.set(currKey, [node]);
+      if (!keyToSameCommentsMap.has(currKey)) {
+        keyToSameCommentsMap.set(currKey, [node]);
         updatedComments.push(node.data);
       } else {
-        keyToSameCommentMap.get(currKey).push(node);
+        keyToSameCommentsMap.get(currKey).push(node);
       }
     }
 
