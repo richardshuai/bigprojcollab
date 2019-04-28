@@ -13,6 +13,7 @@ import { renderNode } from "./components/Editor/RenderNode";
 import { onKeyDown } from "./components/Editor/OnKeyDown";
 import { onChange } from "./components/Editor/OnChange";
 import { onPaste } from "./components/Editor/OnPaste";
+import { Point } from "slate";
 
 /* Initial value */
 import initialValue from "./initialValue.json";
@@ -35,6 +36,38 @@ class App extends Component {
     comments: []
   };
 
+  scanDocumentValue = () => {
+    const commentNodes = this.state.value.document.getInlinesByType("comment");
+    console.log(JSON.stringify(commentNodes));
+    // console.log("Hi");
+    // console.log(commentNodes.first());
+
+    //Updates comments array
+    const updatedComments = [];
+    const uniqueKeys = [];
+    for (const node of commentNodes) {
+      node.data.set("start", node.data.get("start").moveToStartOfNode(node));
+      const key = node.data.get("uniqueKey");
+      if (uniqueKeys.includes(key)) {
+        continue;
+      }
+      uniqueKeys.push(key);
+      updatedComments.push(node.data);
+    }
+    // console.log(JSON.stringify(updatedComments[0]));
+    this.setState({ comments: updatedComments });
+  };
+
+  docOrderComparator = (a, b) => {
+    if (a.start.isBeforePoint(b.start)) {
+      return -1;
+    } else if (a.start.isAfterPoint(b.start)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+
   componentDidMount() {
     app = this;
     const socket = socketIOClient();
@@ -46,6 +79,7 @@ class App extends Component {
       this.setState({ value: Value.fromJSON(JSON.parse(newContent)) });
     });
     this.setState({ socket: socket, response: true });
+    const scanner = setInterval(() => this.scanDocumentValue(), 1000);
   }
 
   render() {
@@ -77,7 +111,10 @@ class App extends Component {
               />
             </div>
             <div className="comment-panel-container">
-              <CommentPanel comments={this.state.comments} />
+              <CommentPanel
+                comments={this.state.comments}
+                scanDocumentValue={this.scanDocumentValue}
+              />
             </div>
             <div className="video-container">
               <Video />

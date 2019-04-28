@@ -24,7 +24,10 @@ class CommentPanel extends Component {
       <div>
         {/* <SortByDropdown /> */}
         {this.state.commenting ? (
-          <CommentForm noneditable={this.noneditable} />
+          <CommentForm
+            noneditable={this.noneditable}
+            scanDocumentValue={this.props.scanDocumentValue}
+          />
         ) : null}
         <FilterByTabs comments={this.props.comments} />
       </div>

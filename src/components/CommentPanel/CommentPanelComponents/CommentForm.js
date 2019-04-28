@@ -42,31 +42,32 @@ class CommentForm extends Component {
       data: data,
       key: uniqueKey
     });
-    this.addComment(data);
+    // this.addComment(data);
+    this.props.scanDocumentValue();
   };
 
-  addComment = commentData => {
-    const updatedComments = [...app.state.comments, commentData];
+  // addComment = commentData => {
+  //   const updatedComments = [...app.state.comments, commentData];
 
-    //Sorting by reverse timestamp
-    // updatedComments.sort((a, b) => b.timeStamp - a.timeStamp);
+  //   //Sorting by reverse timestamp
+  //   // updatedComments.sort((a, b) => b.timeStamp - a.timeStamp);
 
-    //Sorting by document order
-    updatedComments.sort(this.docOrderComparator);
-    app.setState({ comments: updatedComments });
-  };
+  //   //Sorting by document order
+  //   updatedComments.sort(this.docOrderComparator);
+  //   app.setState({ comments: updatedComments });
+  // };
 
   /* TODO */
 
-  docOrderComparator = (a, b) => {
-    if (a.start.isBeforePoint(b.start)) {
-      return -1;
-    } else if (a.start.isAfterPoint(b.start)) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
+  // docOrderComparator = (a, b) => {
+  //   if (a.start.isBeforePoint(b.start)) {
+  //     return -1;
+  //   } else if (a.start.isAfterPoint(b.start)) {
+  //     return 1;
+  //   } else {
+  //     return 0;
+  //   }
+  // };
 
   handleSubmit = event => {
     event.preventDefault();
@@ -82,6 +83,7 @@ class CommentForm extends Component {
       comment: value
     });
   };
+
   handleCheckboxChange = event => {
     const target = event.target;
     const value = target.checked;

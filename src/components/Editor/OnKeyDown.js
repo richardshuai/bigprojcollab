@@ -5,7 +5,6 @@ import { Document, Range } from "slate";
 export const onKeyDown = async (event, editor, next) => {
   //Hotkey handling
   const hotkeyProps = findMarkHotkey(event);
-
   if (hotkeyProps.containsKey) {
     event.preventDefault();
     const type = hotkeyProps.type;
@@ -51,9 +50,9 @@ const updateComment = () => {
   if (isInCommentData.isInComment) {
     const { commentNode } = isInCommentData;
     const target = app.state.comments.filter(
-      data => data["uniqueKey"] === commentNode.data.get("uniqueKey")
+      data => data.get("uniqueKey") === commentNode.data.get("uniqueKey")
     )[0];
-    target.quoted = commentNode.text;
+    target.set("quoted", commentNode.get("text"));
   }
 };
 
