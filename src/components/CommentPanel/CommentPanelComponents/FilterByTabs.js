@@ -7,22 +7,12 @@ class FilterByTabs extends Component {
     switch (a) {
       case "All":
         return this.props.comments.map(comment => (
-          <CommentBox
-            quoted={comment.get("quoted")}
-            suggestion={comment.get("suggestion")}
-            uniqueKey={comment.get("uniqueKey")}
-          />
+          <CommentBox comment={comment} />
         ));
       default:
         return this.props.comments
-          .filter(comment => comment.get("tag").includes(a))
-          .map(comment => (
-            <CommentBox
-              quoted={comment.get("quoted")}
-              suggestion={comment.get("suggestion")}
-              uniqueKey={comment.get("uniqueKey")}
-            />
-          ));
+          .filter(comment => comment.tags.includes(a))
+          .map(comment => <CommentBox comment={comment} />);
     }
   };
 

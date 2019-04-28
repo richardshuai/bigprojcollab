@@ -14,7 +14,7 @@ class CommentForm extends Component {
     const { value } = editor;
 
     const suggestion = this.state.comment;
-    const tag = this.state.tags;
+    const tags = this.state.tags;
     const selection = value.selection;
     const start = selection.start;
 
@@ -31,7 +31,7 @@ class CommentForm extends Component {
       timeStamp,
       start,
       selection,
-      tag
+      tags
     };
 
     await editor.wrapInline({
@@ -39,7 +39,6 @@ class CommentForm extends Component {
       data: data,
       key: uniqueKey
     });
-    // this.addComment(data);
     this.props.scanDocument();
   };
 

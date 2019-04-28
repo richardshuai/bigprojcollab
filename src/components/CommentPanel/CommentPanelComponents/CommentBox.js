@@ -15,13 +15,15 @@ class CommentBox extends Component {
     return (
       <div class="card" onClick={this.pointToComment}>
         <div class="card-body">
-          <h5 class="card-title">{this.state.creator} </h5>
-          <h6 class="card-subtitle mb-2 text-muted">{this.state.time}</h6>
+          <h5 class="card-title"> Anonymous </h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {this.props.comment.timeStamp}
+          </h6>
           <p class="card-text">
             <em>
               {this.state.quotedCollapsed
                 ? this.processCollapsed()
-                : this.props.quoted}
+                : this.props.comment.quoted}
             </em>
           </p>
 
@@ -33,7 +35,7 @@ class CommentBox extends Component {
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
 
-          <p class="card-text">{this.props.suggestion}</p>
+          <p class="card-text">{this.props.comment.suggestion}</p>
           <p
             class="card-text"
             style={{ color: "#aaaacc" }}
@@ -42,25 +44,26 @@ class CommentBox extends Component {
             Update Comment
           </p>
           <p class="card-text">Reply</p>
-          <p class="card-text">{this.state.details}</p>
+          <p class="card-text">
+            Tags: {this.props.comment.tags.map(tag => tag + " ")}
+          </p>
         </div>
       </div>
     );
   }
 
+  // This can probably be changed now that we're scanning every two seconds.
+  // Make sure to call scan document before doing so though.
   pointToComment = () => {
     const commentNodes = app.editor.value.document.getInlinesByType("comment");
 
     const target = commentNodes
-      .filter(node => node.data.get("uniqueKey") === this.props.uniqueKey)
+      .filter(
+        node => node.data.get("uniqueKey") === this.props.comment.uniqueKey
+      )
       .first();
     app.editor.focus();
     app.editor.moveToStartOfNode(target);
-  };
-
-  updateComment = event => {
-    const newSuggestion = window.prompt("Updated suggestion?");
-    this.props.suggestion = newSuggestion;
   };
 
   onClickQuotedCollapse = event => {
@@ -68,10 +71,10 @@ class CommentBox extends Component {
   };
 
   processCollapsed = () => {
-    if (this.props.quoted.length > 30) {
-      return this.props.quoted.slice(0, 30) + "...";
+    if (this.props.comment.quoted.length > 30) {
+      return this.props.comment.quoted.slice(0, 30) + "...";
     }
-    return this.props.quoted;
+    return this.props.comment.quoted;
   };
 }
 

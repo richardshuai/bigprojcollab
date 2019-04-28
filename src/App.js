@@ -19,7 +19,6 @@ import initialValue from "./initialValue.json";
 
 /* Plugins */
 import CollapseOnEscape from "slate-collapse-on-escape";
-
 import socketIOClient from "socket.io-client";
 
 /* Export app for use by handlers */
@@ -97,7 +96,7 @@ class App extends Component {
   ref = editor => (this.editor = editor);
 
   // Pasting comments is broken for some reason. Figure that out later.
-  scanDocument = () => {
+  scanDocument = async () => {
     const commentNodes = this.state.value.document.getInlinesByType("comment");
 
     // Updates comments array, create map for duplicates
@@ -105,33 +104,32 @@ class App extends Component {
     const keyToSameCommentsMap = new Map();
 
     for (const node of commentNodes) {
-      // Update start of comments for sorting
-      /* Is the start the same even for duplicate nodes? */
-      const currStart = node.data.get("start").moveToStartOfNode(node);
-      node.data.set("start", currStart);
+      const data = this.generateData(node);
 
       // If a duplicate node is created (such as by line breaks), store in a map.
       // Push unique comments to commentsArray, and for now, just ignore the duplicate.
-      const currKey = node.data.get("uniqueKey");
+      const currKey = data.uniqueKey;
       if (!keyToSameCommentsMap.has(currKey)) {
-        keyToSameCommentsMap.set(currKey, [node]);
-        updatedComments.push(node.data);
+        keyToSameCommentsMap.set(currKey, [data]);
+        updatedComments.push(data);
       } else {
-        keyToSameCommentsMap.get(currKey).push(node);
+        keyToSameCommentsMap.get(currKey).push(data);
       }
     }
 
     this.setState({ comments: updatedComments });
   };
 
-  docOrderComparator = (a, b) => {
-    if (a.start.isBeforePoint(b.start)) {
-      return -1;
-    } else if (a.start.isAfterPoint(b.start)) {
-      return 1;
-    } else {
-      return 0;
-    }
+  generateData = node => {
+    // Update start of comments for sorting
+    // Dynamic text rendering
+    const data = {};
+    data.uniqueKey = node.data.get("uniqueKey");
+    data.start = node.data.get("start").moveToStartOfNode(node);
+    data.quoted = node.text;
+    data.tags = node.data.get("tags");
+    data.timeStamp = node.data.get("timeStamp");
+    return data;
   };
 }
 
