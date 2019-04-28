@@ -6,7 +6,8 @@ import CommentForm from "./CommentPanelComponents/CommentForm";
 export let panel;
 class CommentPanel extends Component {
   state = {
-    commenting: false
+    commenting: false,
+    sorting: "default"
   };
 
   componentDidMount() {
@@ -19,17 +20,25 @@ class CommentPanel extends Component {
     });
   };
 
+  sortBy = sort => {
+    this.setState({
+      sorting: sort
+    });
+  };
   render() {
     return (
       <div>
-        {/* <SortByDropdown /> */}
+        {<SortByDropdown sortBy={this.sortBy} />}
         {this.state.commenting ? (
           <CommentForm
             noneditable={this.noneditable}
             scanDocument={this.props.scanDocument}
           />
         ) : null}
-        <FilterByTabs comments={this.props.comments} />
+        <FilterByTabs
+          comments={this.props.comments}
+          sorting={this.state.sorting}
+        />
       </div>
     );
   }

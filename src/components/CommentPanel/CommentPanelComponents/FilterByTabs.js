@@ -6,13 +6,53 @@ class FilterByTabs extends Component {
   tabContent = a => {
     switch (a) {
       case "All":
-        return this.props.comments.map(comment => (
-          <CommentBox comment={comment} />
-        ));
+        return this.props.comments
+          .sort(this.sorting(this.props.sorting))
+          .map(comment => <CommentBox comment={comment} />);
       default:
         return this.props.comments
+          .sort(this.sorting(this.props.sorting))
           .filter(comment => comment.tags.includes(a))
           .map(comment => <CommentBox comment={comment} />);
+    }
+  };
+  sorting = sort => {
+    if (sort === "Oldest") {
+      return this.sortbyOldest;
+    } else if (sort === "Newest") {
+      return this.sortbyNewest;
+    } else {
+      return this.sortbyPosition;
+    }
+  };
+
+  sortbyPosition = (a, b) => {
+    if (a.start.isBeforePoint(b.start)) {
+      return -1;
+    } else if (a.start.isAfterPoint(b.start)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+
+  sortbyNewest = (a, b) => {
+    if (a.timestamp > b.timeStamp) {
+      return 1;
+    } else if (a.timeStamp < b.timeStamp) {
+      return -1;
+    } else {
+      return 0;
+    }
+  };
+
+  sortbyOldest = (a, b) => {
+    if (a.timeStamp < b.timeStamp) {
+      return 1;
+    } else if (a.timeStamp > b.timeStamp) {
+      return -1;
+    } else {
+      return 0;
     }
   };
 

@@ -2,45 +2,45 @@ import React, { Component } from "react";
 
 export class SortByDropdown extends Component {
   state = {
-    text: "Sort By: Default",
+    text: "Sort By: Position",
     active: "",
-    time: "dropdown-item",
-    grammar: "dropdown-item",
-    content: "dropdown-item"
+    newest: "dropdown-item",
+    oldest: "dropdown-item",
+    position: "dropdown-item"
   };
   onClickButton = (property, e) => {
     this.setState({
       text: "Sort By: " + property
     });
-
-    if (property === "Time") {
+    this.props.sortBy(property);
+    if (property === "Newest") {
       this.setState({
-        time: "dropdown-item active",
-        grammar: "dropdown-item",
-        content: "dropdown-item"
+        newest: "dropdown-item active",
+        oldest: "dropdown-item",
+        position: "dropdown-item"
       });
     }
-    if (property === "Grammar") {
+    if (property === "Oldest") {
       this.setState({
-        time: "dropdown-item",
-        grammar: "dropdown-item active",
-        content: "dropdown-item"
+        newest: "dropdown-item",
+        oldest: "dropdown-item active",
+        position: "dropdown-item"
       });
     }
-    if (property === "Content") {
+    if (property === "Position") {
       this.setState({
-        time: "dropdown-item",
-        grammar: "dropdown-item",
-        content: "dropdown-item active"
+        newest: "dropdown-item",
+        oldest: "dropdown-item",
+        position: "dropdown-item active"
       });
     }
   };
 
   render() {
     return (
-      <div class="dropdown">
+      <div className="dropdown">
         <button
-          class="btn btn-secondary dropdown-toggle"
+          className="btn btn-secondary dropdown-toggle"
           type="button"
           id="dropdownMenuButton"
           data-toggle="dropdown"
@@ -49,27 +49,27 @@ export class SortByDropdown extends Component {
         >
           {this.state.text}
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a
-            class={this.state.time}
+            className={this.state.newest}
             href="#"
-            onClick={this.onClickButton.bind(this, "Time")}
+            onClick={this.onClickButton.bind(this, "Newest")}
           >
-            Time
+            Newest
           </a>
           <a
-            class={this.state.grammar}
+            className={this.state.oldest}
             href="#"
-            onClick={this.onClickButton.bind(this, "Grammar")}
+            onClick={this.onClickButton.bind(this, "Oldest")}
           >
-            Grammar
+            Oldest
           </a>
           <a
-            class={this.state.content}
+            className={this.state.position}
             href="#"
-            onClick={this.onClickButton.bind(this, "Content")}
+            onClick={this.onClickButton.bind(this, "Position")}
           >
-            Content
+            Position
           </a>
         </div>
       </div>
