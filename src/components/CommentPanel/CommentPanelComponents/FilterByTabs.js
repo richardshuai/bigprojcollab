@@ -36,7 +36,7 @@ class FilterByTabs extends Component {
     }
   };
 
-  sortbyNewest = (a, b) => {
+  sortbyOldest = (a, b) => {
     if (a.timestamp > b.timeStamp) {
       return 1;
     } else if (a.timeStamp < b.timeStamp) {
@@ -46,7 +46,7 @@ class FilterByTabs extends Component {
     }
   };
 
-  sortbyOldest = (a, b) => {
+  sortbyNewest = (a, b) => {
     if (a.timeStamp < b.timeStamp) {
       return 1;
     } else if (a.timeStamp > b.timeStamp) {
