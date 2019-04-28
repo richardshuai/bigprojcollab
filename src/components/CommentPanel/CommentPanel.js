@@ -2,15 +2,15 @@ import React, { Component } from "react";
 import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 import FilterByTabs from "./CommentPanelComponents/FilterByTabs";
 import CommentForm from "./CommentPanelComponents/CommentForm";
-export let panel;
 
+export let panel;
 class CommentPanel extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    commenting: false
+  };
+
+  componentDidMount() {
     panel = this;
-    this.state = {
-      commenting: false
-    };
   }
 
   noneditable = () => {
@@ -26,7 +26,7 @@ class CommentPanel extends Component {
         {this.state.commenting ? (
           <CommentForm
             noneditable={this.noneditable}
-            scanDocumentValue={this.props.scanDocumentValue}
+            scanDocument={this.props.scanDocument}
           />
         ) : null}
         <FilterByTabs comments={this.props.comments} />

@@ -1,6 +1,6 @@
 import { findMarkHotkey } from "../Utils/Hotkeys";
 import { app } from "../../App";
-import { Document, Range } from "slate";
+import { Document } from "slate";
 
 export const onKeyDown = async (event, editor, next) => {
   //Hotkey handling

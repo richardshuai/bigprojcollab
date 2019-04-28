@@ -4,13 +4,10 @@ import { KeyUtils } from "slate";
 
 //Storing comments in app.state as comment data, not the nodes itself.
 class CommentForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comment: "",
-      tags: []
-    };
-  }
+  state = {
+    comment: "",
+    tags: []
+  };
 
   retrieveCommentData = async () => {
     const { editor } = app;
@@ -43,31 +40,8 @@ class CommentForm extends Component {
       key: uniqueKey
     });
     // this.addComment(data);
-    this.props.scanDocumentValue();
+    this.props.scanDocument();
   };
-
-  // addComment = commentData => {
-  //   const updatedComments = [...app.state.comments, commentData];
-
-  //   //Sorting by reverse timestamp
-  //   // updatedComments.sort((a, b) => b.timeStamp - a.timeStamp);
-
-  //   //Sorting by document order
-  //   updatedComments.sort(this.docOrderComparator);
-  //   app.setState({ comments: updatedComments });
-  // };
-
-  /* TODO */
-
-  // docOrderComparator = (a, b) => {
-  //   if (a.start.isBeforePoint(b.start)) {
-  //     return -1;
-  //   } else if (a.start.isAfterPoint(b.start)) {
-  //     return 1;
-  //   } else {
-  //     return 0;
-  //   }
-  // };
 
   handleSubmit = event => {
     event.preventDefault();

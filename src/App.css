@@ -22,7 +22,7 @@ body {
 }
 
 .editor-container {
-  grid-column: 2;
+  grid-column: 2/4;
   grid-row: 2/8;
   float: right;
   background-color: #eeeeee;
@@ -41,7 +41,6 @@ body {
 
 .video-container {
   grid-row: 2/8;
-
   max-height: 80%;
   border: black 5px solid;
 }

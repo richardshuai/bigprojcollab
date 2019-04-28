@@ -13,7 +13,6 @@ import { renderNode } from "./components/Editor/RenderNode";
 import { onKeyDown } from "./components/Editor/OnKeyDown";
 import { onChange } from "./components/Editor/OnChange";
 import { onPaste } from "./components/Editor/OnPaste";
-import { Point } from "slate";
 
 /* Initial value */
 import initialValue from "./initialValue.json";
@@ -36,38 +35,6 @@ class App extends Component {
     comments: []
   };
 
-  scanDocumentValue = () => {
-    const commentNodes = this.state.value.document.getInlinesByType("comment");
-    console.log(JSON.stringify(commentNodes));
-    // console.log("Hi");
-    // console.log(commentNodes.first());
-
-    //Updates comments array
-    const updatedComments = [];
-    const uniqueKeys = [];
-    for (const node of commentNodes) {
-      node.data.set("start", node.data.get("start").moveToStartOfNode(node));
-      const key = node.data.get("uniqueKey");
-      if (uniqueKeys.includes(key)) {
-        continue;
-      }
-      uniqueKeys.push(key);
-      updatedComments.push(node.data);
-    }
-    // console.log(JSON.stringify(updatedComments[0]));
-    this.setState({ comments: updatedComments });
-  };
-
-  docOrderComparator = (a, b) => {
-    if (a.start.isBeforePoint(b.start)) {
-      return -1;
-    } else if (a.start.isAfterPoint(b.start)) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
-
   componentDidMount() {
     app = this;
     const socket = socketIOClient();
@@ -79,7 +46,8 @@ class App extends Component {
       this.setState({ value: Value.fromJSON(JSON.parse(newContent)) });
     });
     this.setState({ socket: socket, response: true });
-    const scanner = setInterval(() => this.scanDocumentValue(), 1000);
+
+    const scanner = setInterval(() => this.scanDocument(), 2000);
   }
 
   render() {
@@ -113,7 +81,7 @@ class App extends Component {
             <div className="comment-panel-container">
               <CommentPanel
                 comments={this.state.comments}
-                scanDocumentValue={this.scanDocumentValue}
+                scanDocument={this.scanDocument}
               />
             </div>
             <div className="video-container">
@@ -127,6 +95,43 @@ class App extends Component {
 
   /* Editor props */
   ref = editor => (this.editor = editor);
+
+  scanDocument = () => {
+    const commentNodes = this.state.value.document.getInlinesByType("comment");
+
+    // Updates comments array, create map for duplicates
+    const updatedComments = [];
+    const keyToSameCommentMap = new Map();
+
+    for (const node of commentNodes) {
+      // Update start of comments for sorting
+      /* Is the start the same even for duplicate nodes? */
+      const currStart = node.data.get("start").moveToStartOfNode(node);
+      node.data.set("start", currStart);
+
+      // If a duplicate node is created (such as by line breaks), store in a map.
+      // Push unique comments to commentsArray, and for now, just ignore the duplicate.
+      const currKey = node.data.get("uniqueKey");
+      if (!keyToSameCommentMap.has(currKey)) {
+        keyToSameCommentMap.set(currKey, [node]);
+        updatedComments.push(node.data);
+      } else {
+        keyToSameCommentMap.get(currKey).push(node);
+      }
+    }
+
+    this.setState({ comments: updatedComments });
+  };
+
+  docOrderComparator = (a, b) => {
+    if (a.start.isBeforePoint(b.start)) {
+      return -1;
+    } else if (a.start.isAfterPoint(b.start)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
 }
 
 export default App;

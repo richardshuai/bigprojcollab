@@ -1,4 +1,3 @@
-import { KeyUtils } from "slate";
 import { hasInline } from "../InlineButton";
 import { app } from "../../../../App";
 import { panel } from "../../../CommentPanel/CommentPanel";
