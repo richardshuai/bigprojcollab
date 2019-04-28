@@ -4,13 +4,10 @@ import { KeyUtils } from "slate";
 
 //Storing comments in app.state as comment data, not the nodes itself.
 class CommentForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comment: "",
-      tags: []
-    };
-  }
+  state = {
+    comment: "",
+    tags: []
+  };
 
   retrieveCommentData = async () => {
     const { editor } = app;
@@ -24,44 +21,34 @@ class CommentForm extends Component {
     const date = new Date();
     const timeStamp = date.getTime();
     const uniqueKey = KeyUtils.create();
+    const quoted = value.fragment.text;
 
     //Comment data
-    const data = { uniqueKey, suggestion, timeStamp, start, selection, tag };
+    const data = {
+      quoted,
+      uniqueKey,
+      suggestion,
+      timeStamp,
+      start,
+      selection,
+      tag
+    };
+
     await editor.wrapInline({
       type: "comment",
       data: data,
       key: uniqueKey
     });
-    this.addComment(data);
-  };
-  addComment = commentData => {
-    const updatedComments = [...app.state.comments, commentData];
-
-    //Sorting by reverse timestamp
-    // updatedComments.sort((a, b) => b.timeStamp - a.timeStamp);
-
-    //Sorting by document order
-    updatedComments.sort(this.docOrderComparator);
-    app.setState({ comments: updatedComments });
-  };
-
-  /* TODO */
-
-  docOrderComparator = (a, b) => {
-    if (a.start.isBeforePoint(b.start)) {
-      return -1;
-    } else if (a.start.isAfterPoint(b.start)) {
-      return 1;
-    } else {
-      return 0;
-    }
+    // this.addComment(data);
+    this.props.scanDocument();
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.panel();
+    this.props.noneditable();
     this.retrieveCommentData();
   };
+
   handleCommentChange = event => {
     const target = event.target;
     const value = target.value;
@@ -70,6 +57,7 @@ class CommentForm extends Component {
       comment: value
     });
   };
+
   handleCheckboxChange = event => {
     const target = event.target;
     const value = target.checked;
