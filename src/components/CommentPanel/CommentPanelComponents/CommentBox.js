@@ -3,11 +3,6 @@ import { app } from "../../../App";
 
 class CommentBox extends Component {
   state = {
-    creator: "Teacher",
-    time: "date commented",
-    quoted: "Highlighted Text",
-    comment: "The Comment",
-    details: "tags, etc",
     quotedCollapsed: true
   };
 
@@ -17,7 +12,7 @@ class CommentBox extends Component {
         <div class="card-body">
           <h5 class="card-title"> Anonymous </h5>
           <h6 class="card-subtitle mb-2 text-muted">
-            {this.props.comment.timeStamp}
+            {new Date(this.props.comment.timeStamp).toString()}
           </h6>
           <p class="card-text">
             <em>
