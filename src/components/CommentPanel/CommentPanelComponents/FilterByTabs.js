@@ -58,11 +58,11 @@ class FilterByTabs extends Component {
 
   render() {
     return (
-      <div class="tagtabs">
-        <ul class="nav nav-tabs" id="filterTabs" role="tablist">
-          <li class="nav-item">
+      <div className="tagtabs">
+        <ul className="nav nav-tabs" id="filterTabs" role="tablist">
+          <li className="nav-item">
             <a
-              class="nav-link active"
+              className="nav-link active"
               id="all-tab"
               data-toggle="tab"
               href="#all"
@@ -73,9 +73,9 @@ class FilterByTabs extends Component {
               All
             </a>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <a
-              class="nav-link"
+              className="nav-link"
               id="grammar-tab"
               data-toggle="tab"
               href="#grammar"
@@ -86,9 +86,9 @@ class FilterByTabs extends Component {
               Grammar
             </a>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <a
-              class="nav-link"
+              className="nav-link"
               id="theme-tab"
               data-toggle="tab"
               href="#theme"
@@ -99,9 +99,9 @@ class FilterByTabs extends Component {
               Theme
             </a>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <a
-              class="nav-link"
+              className="nav-link"
               id="content-tab"
               data-toggle="tab"
               href="#content"
@@ -114,9 +114,9 @@ class FilterByTabs extends Component {
           </li>
         </ul>
 
-        <div class="tab-content">
+        <div className="tab-content">
           <div
-            class="tab-pane active"
+            className="tab-pane active"
             id="all"
             role="tabpanel"
             aria-labelledby="all-tab"
@@ -124,7 +124,7 @@ class FilterByTabs extends Component {
             {this.tabContent("All")}
           </div>
           <div
-            class="tab-pane"
+            className="tab-pane"
             id="grammar"
             role="tabpanel"
             aria-labelledby="grammar-tab"
@@ -132,7 +132,7 @@ class FilterByTabs extends Component {
             {this.tabContent("Grammar")}
           </div>
           <div
-            class="tab-pane"
+            className="tab-pane"
             id="theme"
             role="tabpanel"
             aria-labelledby="theme-tab"
@@ -140,7 +140,7 @@ class FilterByTabs extends Component {
             {this.tabContent("Theme")}
           </div>
           <div
-            class="tab-pane"
+            className="tab-pane"
             id="content"
             role="tabpanel"
             aria-labelledby="content-tab"

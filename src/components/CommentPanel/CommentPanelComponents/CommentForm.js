@@ -61,71 +61,76 @@ class CommentForm extends Component {
     const target = event.target;
     const value = target.checked;
     const name = target.name;
-
+    console.log(JSON.stringify(value));
     if (value === true) {
-      this.setState(prevState => ({
-        tags: [...prevState.tags, name]
-      }));
+      if (!this.state.tags.includes(name)) {
+        this.setState(prevState => ({
+          tags: [...prevState.tags, name]
+        }));
+      }
+    } else {
+      this.state.tags.splice(this.state.tags.indexOf(name), 1);
     }
+    console.log(JSON.stringify(this.state.tags));
   };
 
   render() {
     return (
       <div>
         <form>
-          <div class="form-group">
+          <div className="form-group">
             <label for="comment">Comment</label>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               id="comment"
               placeholder="Here's my comment"
               onChange={this.handleCommentChange}
             />
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               name="Grammar"
               type="checkbox"
               value=""
               id="defaultCheck1"
               onChange={this.handleCheckboxChange}
             />
-            <label class="form-check-label" for="defaultCheck1">
+            <label className="form-check-label" for="defaultCheck1">
               Grammar
             </label>
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               name="Theme"
               type="checkbox"
               value=""
               id="defaultCheck1"
               onChange={this.handleCheckboxChange}
             />
-            <label class="form-check-label" for="defaultCheck1">
+            <label className="form-check-label" for="defaultCheck1">
               Theme
             </label>
           </div>
-          <div class="form-check">
+          <div className="form-check">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="checkbox"
               name="Content"
               value=""
               id="defaultCheck2"
               onChange={this.handleCheckboxChange}
             />
-            <label class="form-check-label" for="defaultCheck2">
+            <label className="form-check-label" for="defaultCheck2">
               Content
             </label>
           </div>
 
           <button
             type="submit"
-            class="btn btn-primary"
+            className="btn btn-primary"
             onClick={e => this.handleSubmit(e)}
           >
             Submit

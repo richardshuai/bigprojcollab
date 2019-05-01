@@ -8,13 +8,13 @@ class CommentBox extends Component {
 
   render() {
     return (
-      <div class="card" onClick={this.pointToComment}>
-        <div class="card-body">
-          <h5 class="card-title"> Anonymous </h5>
-          <h6 class="card-subtitle mb-2 text-muted">
+      <div className="card" onClick={this.pointToComment}>
+        <div className="card-body">
+          <h5 className="card-title"> Anonymous </h5>
+          <h6 className="card-subtitle mb-2 text-muted">
             {new Date(this.props.comment.timeStamp).toString()}
           </h6>
-          <p class="card-text">
+          <p className="card-text">
             <em>
               {this.state.quotedCollapsed
                 ? this.processCollapsed()
@@ -24,22 +24,22 @@ class CommentBox extends Component {
 
           <button
             type="button"
-            class="btn btn-secondary"
+            className="btn btn-secondary"
             onClick={this.onClickQuotedCollapse}
           >
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
 
-          <p class="card-text">{this.props.comment.suggestion}</p>
+          <p className="card-text">{this.props.comment.suggestion}</p>
           <p
-            class="card-text"
+            className="card-text"
             style={{ color: "#aaaacc" }}
             onClick={this.updateComment}
           >
             Update Comment
           </p>
-          <p class="card-text">Reply</p>
-          <p class="card-text">
+          <p className="card-text">Reply</p>
+          <p className="card-text">
             Tags: {this.props.comment.tags.map(tag => tag + " ")}
           </p>
         </div>
