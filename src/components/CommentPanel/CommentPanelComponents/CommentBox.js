@@ -1,14 +1,20 @@
 import React, { Component } from "react";
 import { app } from "../../../App";
+import Reply from "./Reply";
+import ReplyContainer from "./ReplyContainer";
 
 class CommentBox extends Component {
   state = {
-    quotedCollapsed: true
+    quotedCollapsed: true,
+    replying: false,
+    replies: [],
+    viewReplies: false
   };
 
   render() {
+    console.log(this.state.replies);
     return (
-      <div className="card" onClick={this.pointToComment}>
+      <div className="card">
         <div className="card-body">
           <h5 className="card-title"> Anonymous </h5>
           <h6 className="card-subtitle mb-2 text-muted">
@@ -21,7 +27,6 @@ class CommentBox extends Component {
                 : this.props.comment.quoted}
             </em>
           </p>
-
           <button
             type="button"
             className="btn btn-secondary"
@@ -29,7 +34,6 @@ class CommentBox extends Component {
           >
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
-
           <p className="card-text">{this.props.comment.suggestion}</p>
           <p
             className="card-text"
@@ -38,7 +42,21 @@ class CommentBox extends Component {
           >
             Update Comment
           </p>
-          <p className="card-text">Reply</p>
+          <div className="reply">
+            <Reply
+              replying={this.state.replying}
+              onClick={this.makeReply}
+              onSubmit={this.addReply}
+              replies={this.state.replies}
+            />
+          </div>
+          <div className="showReplies">
+            <ReplyContainer
+              show={this.state.viewReplies}
+              replies={this.state.replies}
+              showReplies={this.showReplies}
+            />
+          </div>
           <p className="card-text">
             Tags: {this.props.comment.tags.map(tag => tag + " ")}
           </p>
@@ -70,6 +88,25 @@ class CommentBox extends Component {
       return this.props.comment.quoted.slice(0, 30) + "...";
     }
     return this.props.comment.quoted;
+  };
+
+  makeReply = () => {
+    this.setState({ replying: !this.state.replying });
+  };
+
+  addReply = stuff => {
+    if (stuff === "") {
+      return;
+    }
+    const xd = this.state.replies;
+    xd.push(stuff);
+    this.setState({ replies: xd });
+    console.log(this.state.replies);
+    this.makeReply();
+  };
+
+  showReplies = () => {
+    this.setState({ viewReplies: !this.state.viewReplies });
   };
 }
 
