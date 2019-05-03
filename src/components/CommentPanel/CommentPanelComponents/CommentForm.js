@@ -5,18 +5,25 @@ import { KeyUtils } from "slate";
 //Storing comments in app.state as comment data, not the nodes itself.
 class CommentForm extends Component {
   state = {
-    comment: "",
+    value: "",
     tags: ["All"]
   };
+
+  componentDidMount() {
+    if (!(Object.entries(this.props.prevComment).length === 0)) {
+      this.setState({ value: this.props.prevComment.suggestion });
+    }
+  }
 
   retrieveCommentData = async () => {
     const { editor } = app;
     const { value } = editor;
 
-    const suggestion = this.state.comment;
+    const suggestion = this.state.value;
     const tags = this.state.tags;
     const selection = value.selection;
     const start = selection.start;
+    const end = selection.end;
 
     const date = new Date();
     const timeStamp = date.getTime();
@@ -31,7 +38,8 @@ class CommentForm extends Component {
       timeStamp,
       start,
       selection,
-      tags
+      tags,
+      end
     };
 
     await editor.wrapInline({
@@ -49,11 +57,9 @@ class CommentForm extends Component {
   };
 
   handleCommentChange = event => {
-    const target = event.target;
-    const value = target.value;
-
+    const value = event.target.value;
     this.setState({
-      comment: value
+      value: value
     });
   };
 
@@ -83,6 +89,7 @@ class CommentForm extends Component {
               className="form-control"
               id="comment"
               placeholder="Here's my comment"
+              value={this.state.value}
               onChange={this.handleCommentChange}
             />
           </div>

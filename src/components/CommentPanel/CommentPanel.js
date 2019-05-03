@@ -7,7 +7,8 @@ import CommentBox from "./CommentPanelComponents/CommentBox";
 export let panel;
 class CommentPanel extends Component {
   state = {
-    commenting: false
+    commenting: false,
+    prevComment: {}
   };
 
   componentDidMount() {
@@ -33,14 +34,21 @@ class CommentPanel extends Component {
     });
   };
 
+  makeEditable = prevComment => {
+    this.setState({ commenting: true, prevComment: prevComment });
+  };
+
   render() {
     let visibleComments = [];
     if (this.state.sortFn && this.state.filterFn) {
       visibleComments = this.props.comments
         .sort(this.state.sortFn)
         .filter(this.state.filterFn)
-        .map(comment => <CommentBox comment={comment} />);
+        .map(comment => (
+          <CommentBox comment={comment} makeEditable={this.makeEditable} />
+        ));
     }
+
     return (
       <div>
         <SortByDropdown setSortFn={this.setSortFn} />
@@ -49,6 +57,7 @@ class CommentPanel extends Component {
           <CommentForm
             noneditable={this.noneditable}
             scanDocument={this.props.scanDocument}
+            prevComment={this.state.prevComment}
           />
         ) : null}
         {visibleComments}

@@ -126,9 +126,11 @@ class App extends Component {
     const data = {};
     data.uniqueKey = node.data.get("uniqueKey");
     data.start = node.data.get("start").moveToStartOfNode(node);
+    data.end = node.data.get("end").moveToEndOfNode(node);
     data.quoted = node.text;
     data.tags = node.data.get("tags");
     data.timeStamp = node.data.get("timeStamp");
+    data.suggestion = node.data.get("suggestion");
     return data;
   };
 }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { app } from "../../../App";
 import Reply from "./Reply";
 import ReplyContainer from "./ReplyContainer";
+import { Range } from "slate";
 
 class CommentBox extends Component {
   state = {
@@ -15,7 +16,34 @@ class CommentBox extends Component {
     return (
       <div className="card" onClick={this.pointToComment}>
         <div className="card-body">
-          <h5 className="card-title"> Anonymous </h5>
+          <div class="row">
+            <div class="col-md-10">
+              <h5 className="card-title"> Anonymous </h5>
+            </div>
+            <div class="col-md-1">
+              <button
+                class="btn btn-min btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+              >
+                <span class="caret" />
+              </button>
+              <ul class="dropdown-menu">
+                <div className="dropdown-item" onClick={this.editComment}>
+                  Edit
+                </div>
+                <div className="dropdown-item" onClick={this.resolveComment}>
+                  Resolve
+                </div>
+                <div
+                  className="dropdown-item"
+                  onClick={e => this.deleteComment}
+                >
+                  Delete
+                </div>
+              </ul>
+            </div>
+          </div>
+
           <h6 className="card-subtitle mb-2 text-muted">
             {new Date(this.props.comment.timeStamp).toString()}
           </h6>
@@ -112,6 +140,21 @@ class CommentBox extends Component {
 
   showReplies = () => {
     this.setState({ viewReplies: !this.state.viewReplies });
+  };
+
+  editComment = e => {
+    e.stopPropagation();
+    const prevComment = this.props.comment;
+    this.props.makeEditable(prevComment);
+
+    // Delete previous comment
+    const prevRange = Range.create({
+      anchor: prevComment.start,
+      focus: prevComment.end
+    });
+
+    // Put at very end
+    app.editor.unwrapInlineAtRange(prevRange);
   };
 }
 
