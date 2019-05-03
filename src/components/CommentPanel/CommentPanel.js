@@ -34,23 +34,24 @@ class CommentPanel extends Component {
   };
 
   render() {
+    let visibleComments = [];
+    if (this.state.sortFn && this.state.filterFn) {
+      visibleComments = this.props.comments
+        .sort(this.state.sortFn)
+        .filter(this.state.filterFn)
+        .map(comment => <CommentBox comment={comment} />);
+    }
     return (
       <div>
         <SortByDropdown setSortFn={this.setSortFn} />
-        {/* {this.props.comments
-          .sort(this.state.sortFn)
-          .filter(this.state.filterFn)
-          .map(comment => (
-            <CommentBox comment={comment} />
-          ))} */}
+        <FilterByTabs setFilterFn={this.setFilterFn} />
         {this.state.commenting ? (
           <CommentForm
             noneditable={this.noneditable}
             scanDocument={this.props.scanDocument}
           />
         ) : null}
-
-        <FilterByTabs setFilterFn={this.setFilterFn} />
+        {visibleComments}
       </div>
     );
   }

@@ -1,31 +1,50 @@
 import React, { Component } from "react";
-import Tab from "react-bootstrap/Tab";
-import Tabs from "react-bootstrap/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 
 class FilterByTabs extends Component {
   state = {
-    key: "home"
+    filterOptions: ["All", "Content", "Theme", "Grammar"],
+    value: 0
   };
+
   /* Bootstrap nav-tabs class that has tabs that filters comments*/
   componentDidMount() {
     this.props.setFilterFn("All");
   }
 
   render() {
+    const options = [];
+    for (const option of this.state.filterOptions) {
+      options.push(
+        <div label={option} onClick={this.props.setFilterFn.bind(this, option)}>
+          {option}
+        </div>
+      );
+    }
+
     return (
       <Tabs
-        id="controlled-tab-example"
-        activeKey={this.state.key}
-        onSelect={key => this.setState({ key })}
+        value={this.state.value}
+        onChange={this.onChangeTab}
+        variant="fullWidth"
       >
-        <Tab eventKey="home" title="Home">
-          hi
-        </Tab>
-        <Tab eventKey="profile" title="Profile" />
-        <Tab eventKey="contact" title="Contact" disabled />
+        {options.map(option => {
+          return <Tab label={option.props.label} style={this.tabStyles} />;
+        })}
       </Tabs>
     );
   }
+
+  onChangeTab = (event, value) => {
+    this.setState({ value: value });
+    this.props.setFilterFn(this.state.filterOptions[value]);
+  };
+
+  //Styling
+  tabStyles = {
+    minWidth: 100 / this.state.filterOptions.length + "%"
+  };
 }
 
 export default FilterByTabs;

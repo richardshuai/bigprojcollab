@@ -1,26 +1,31 @@
 import React, { Component } from "react";
-import { set } from "immutable";
 
 export class SortByDropdown extends Component {
   state = {
     text: "Sort By: Position",
     sortOptions: {
-      Position: this.sortbyPosition,
-      Newest: this.sortbyNewest,
-      Oldest: this.sortbyOldest
+      Position: "uninitialized",
+      Newest: "uninitialized",
+      Oldest: "uninitialized"
     }
   };
 
   componentDidMount() {
     this.props.setSortFn(this.sortbyPosition);
+    this.setState({
+      sortOptions: {
+        Position: this.sortbyPosition,
+        Newest: this.sortbyNewest,
+        Oldest: this.sortbyOldest
+      }
+    });
   }
 
   onClickButton = (property, e) => {
     this.setState({
       text: "Sort By: " + property
     });
-
-    this.props.setSortFn(this.state.sortOptions.property);
+    this.props.setSortFn(this.state.sortOptions[property]);
   };
 
   render() {
