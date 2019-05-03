@@ -6,7 +6,7 @@ import { KeyUtils } from "slate";
 class CommentForm extends Component {
   state = {
     comment: "",
-    tags: []
+    tags: ["All"]
   };
 
   retrieveCommentData = async () => {
@@ -61,7 +61,6 @@ class CommentForm extends Component {
     const target = event.target;
     const value = target.checked;
     const name = target.name;
-    console.log(JSON.stringify(value));
     if (value === true) {
       if (!this.state.tags.includes(name)) {
         this.setState(prevState => ({
@@ -71,7 +70,6 @@ class CommentForm extends Component {
     } else {
       this.state.tags.splice(this.state.tags.indexOf(name), 1);
     }
-    console.log(JSON.stringify(this.state.tags));
   };
 
   render() {

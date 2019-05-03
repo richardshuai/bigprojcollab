@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { app } from "../../../App";
 
 class ReplyContainer extends Component {
   render() {

@@ -12,7 +12,6 @@ class CommentBox extends Component {
   };
 
   render() {
-    console.log(this.state.replies);
     return (
       <div className="card" onClick={this.pointToComment}>
         <div className="card-body">

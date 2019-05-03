@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 import FilterByTabs from "./CommentPanelComponents/FilterByTabs";
 import CommentForm from "./CommentPanelComponents/CommentForm";
+import CommentBox from "./CommentPanelComponents/CommentBox";
 
 export let panel;
 class CommentPanel extends Component {
   state = {
-    commenting: false,
-    sortingBy: "default"
+    commenting: false
   };
 
   componentDidMount() {
@@ -20,16 +20,29 @@ class CommentPanel extends Component {
     });
   };
 
-  sortBy = sort => {
+  setSortFn = sortFn => {
     this.setState({
-      sortingBy: sort
+      sortFn: sortFn
+    });
+  };
+
+  setFilterFn = filter => {
+    const filterFn = comment => comment.tags.includes(filter);
+    this.setState({
+      filterFn: filterFn
     });
   };
 
   render() {
     return (
       <div>
-        {<SortByDropdown sortBy={this.sortBy} />}
+        <SortByDropdown setSortFn={this.setSortFn} />
+        {/* {this.props.comments
+          .sort(this.state.sortFn)
+          .filter(this.state.filterFn)
+          .map(comment => (
+            <CommentBox comment={comment} />
+          ))} */}
         {this.state.commenting ? (
           <CommentForm
             noneditable={this.noneditable}
@@ -37,10 +50,7 @@ class CommentPanel extends Component {
           />
         ) : null}
 
-        <FilterByTabs
-          comments={this.props.comments}
-          sortingBy={this.state.sortingBy}
-        />
+        <FilterByTabs setFilterFn={this.setFilterFn} />
       </div>
     );
   }
