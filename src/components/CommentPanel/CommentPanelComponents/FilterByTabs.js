@@ -7,16 +7,17 @@ class FilterByTabs extends Component {
     switch (a) {
       case "All":
         return this.props.comments
-          .sort(this.sorting(this.props.sorting))
+          .sort(this.sortBy(this.props.sortingBy))
           .map(comment => <CommentBox comment={comment} />);
       default:
         return this.props.comments
-          .sort(this.sorting(this.props.sorting))
+          .sort(this.sortBy(this.props.sortingBy))
           .filter(comment => comment.tags.includes(a))
           .map(comment => <CommentBox comment={comment} />);
     }
   };
-  sorting = sort => {
+
+  sortBy = sort => {
     if (sort === "Oldest") {
       return this.sortbyOldest;
     } else if (sort === "Newest") {

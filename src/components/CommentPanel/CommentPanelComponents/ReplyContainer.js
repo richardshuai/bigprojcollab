@@ -15,7 +15,6 @@ class ReplyContainer extends Component {
         </div>
       );
     } else {
-      console.log(this.props.replies);
       if (this.props.replies.length === 0) {
         return <p className="card-text">No Replies</p>;
       } else if (this.props.replies.length === 1) {

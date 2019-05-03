@@ -8,10 +8,12 @@ export class SortByDropdown extends Component {
     oldest: "dropdown-item",
     position: "dropdown-item"
   };
+
   onClickButton = (property, e) => {
     this.setState({
       text: "Sort By: " + property
     });
+
     this.props.sortBy(property);
     if (property === "Newest") {
       this.setState({

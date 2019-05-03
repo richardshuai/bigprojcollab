@@ -7,7 +7,7 @@ export let panel;
 class CommentPanel extends Component {
   state = {
     commenting: false,
-    sorting: "default"
+    sortingBy: "default"
   };
 
   componentDidMount() {
@@ -22,9 +22,10 @@ class CommentPanel extends Component {
 
   sortBy = sort => {
     this.setState({
-      sorting: sort
+      sortingBy: sort
     });
   };
+
   render() {
     return (
       <div>
@@ -35,9 +36,10 @@ class CommentPanel extends Component {
             scanDocument={this.props.scanDocument}
           />
         ) : null}
+
         <FilterByTabs
           comments={this.props.comments}
-          sorting={this.state.sorting}
+          sortingBy={this.state.sortingBy}
         />
       </div>
     );

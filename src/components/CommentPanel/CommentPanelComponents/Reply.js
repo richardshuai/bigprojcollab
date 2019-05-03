@@ -10,13 +10,9 @@ class Reply extends Component {
     if (this.props.replying) {
       return (
         <div>
-          <form className="card-input">
+          <form className="card-input" onClick={this.onClickReply}>
             Reply here
-            <input
-              type="text"
-              onChange={this.changeReplyValue}
-              onClick={this.onClick}
-            />
+            <input type="text" onChange={this.changeReplyValue} />
           </form>
           <button className="submit" onClick={this.onSubmit}>
             Submit
@@ -32,15 +28,13 @@ class Reply extends Component {
     }
   }
 
-  onSubmit = e => {
-    this.props.onSubmit(this.state.replyValue);
-    console.log("hi");
-    console.log(this.props);
-    this.setState({ replyValue: "" });
+  onClick = e => {
+    e.stopPropagation();
   };
 
-  onClick = e => {
-    e.preventDefault();
+  onSubmit = e => {
+    this.props.onSubmit(this.state.replyValue);
+    this.setState({ replyValue: "" });
   };
 
   changeReplyValue = e => {
