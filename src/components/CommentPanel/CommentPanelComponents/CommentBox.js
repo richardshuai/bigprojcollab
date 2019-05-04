@@ -111,6 +111,7 @@ class CommentBox extends Component {
   onClickComment = () => {
     this.pointToComment();
     this.props.expandComment(this.props.id);
+    this.setState({ numVisibleReplies: 1 });
   };
 
   // Obtains the node, using the comment's uniqueKey
