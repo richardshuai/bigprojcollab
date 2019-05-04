@@ -6,8 +6,9 @@ class ReplyContainer extends Component {
   render() {
     const numLeft = this.props.replies.length - this.props.numVisibleReplies;
 
+    /* Render different reply buttons depending on numLeft */
     let viewReplyButton = null;
-    if (numLeft === 0) {
+    if (numLeft === 0 || numLeft === -1) {
       viewReplyButton = null;
     } else if (numLeft === 1) {
       viewReplyButton = (
@@ -24,6 +25,7 @@ class ReplyContainer extends Component {
       );
     }
 
+    /* Show only replies that are past the current index */
     let visibleReplies = null;
     if (this.props.viewingReplies) {
       visibleReplies = (

@@ -10,10 +10,9 @@ class CommentBox extends Component {
   state = {
     editing: false,
     quotedCollapsed: true,
-    replying: false,
     replies: [],
     viewingReplies: false,
-    numVisibleReplies: 0
+    numVisibleReplies: 1
   };
 
   render() {
@@ -27,30 +26,28 @@ class CommentBox extends Component {
       );
     }
 
-    // Conditionally render reply container
-    const replyContainer = this.props.isExpanded ? (
-      <Card className="replyBox" onClick={this.preventPoint}>
-        <div>
-          <ReplyForm
-            replying={this.state.replying}
-            beginReplying={this.beginReplying}
-            viewingReplies={this.state.viewingReplies}
-            addReply={this.addReply}
-            replies={this.state.replies}
-            hideReplies={this.hideReplies}
-          />
-        </div>
-        <div>
-          <ReplyContainer
-            viewingReplies={this.state.viewingReplies}
-            replies={this.state.replies}
-            hideReplies={this.hideReplies}
-            numVisibleReplies={this.state.numVisibleReplies}
-            seeMoreReplies={this.seeMoreReplies}
-          />
-        </div>
-      </Card>
-    ) : null;
+    /* Conditionally render reply container */
+    let replyContainer = null;
+    if (this.props.isExpanded) {
+      replyContainer = (
+        <Card className="replyBox" onClick={this.preventPoint}>
+          <div>
+            <ReplyForm addReply={this.addReply} />
+          </div>
+          <div>
+            <ReplyContainer
+              replies={this.state.replies}
+              viewingReplies={this.state.viewingReplies}
+              hideReplies={this.hideReplies}
+              numVisibleReplies={this.state.numVisibleReplies}
+              seeMoreReplies={this.seeMoreReplies}
+            />
+          </div>
+        </Card>
+      );
+    } else {
+      replyContainer = null;
+    }
 
     return (
       <div className="card" onClick={this.onClickComment}>
@@ -86,14 +83,14 @@ class CommentBox extends Component {
           <p className="card-text">
             <em>
               {this.state.quotedCollapsed
-                ? this.processCollapsed()
+                ? this.truncateQuoted()
                 : this.props.comment.quoted}
             </em>
           </p>
           <button
             type="button"
             className="btn btn-secondary"
-            onClick={this.onClickQuotedCollapse}
+            onClick={this.toggleQuotedCollapse}
           >
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
@@ -129,12 +126,12 @@ class CommentBox extends Component {
     app.editor.moveToStartOfNode(target);
   };
 
-  onClickQuotedCollapse = event => {
+  toggleQuotedCollapse = event => {
     this.setState({ quotedCollapsed: !this.state.quotedCollapsed });
     event.stopPropagation();
   };
 
-  processCollapsed = () => {
+  truncateQuoted = () => {
     if (this.props.comment.quoted.length > 30) {
       return this.props.comment.quoted.slice(0, 30) + "...";
     }
@@ -143,22 +140,12 @@ class CommentBox extends Component {
 
   addReply = replyText => {
     if (replyText === "") {
-      this.finishReplying();
       return;
     }
     const replies = this.state.replies;
     replies.push(replyText);
     this.setState({ replies: replies });
     this.seeMoreReplies(1);
-    this.finishReplying();
-  };
-
-  beginReplying = () => {
-    this.setState({ replying: true });
-  };
-
-  finishReplying = () => {
-    this.setState({ replying: false });
   };
 
   hideReplies = () => {

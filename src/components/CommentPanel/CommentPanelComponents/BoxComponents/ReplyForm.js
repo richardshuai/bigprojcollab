@@ -8,39 +8,23 @@ class ReplyForm extends Component {
   };
 
   render() {
-    if (this.props.replying) {
-      return (
-        <div>
-          <form>
-            <TextField
-              label="Reply"
-              variant="outlined"
-              margin="normal"
-              value={this.state.replyValue}
-              onChange={this.changeReplyValue}
-            />
-          </form>
+    return (
+      <span>
+        <form>
           <Button color="secondary" variant="outlined" onClick={this.onSubmit}>
-            Submit
-          </Button>
-        </div>
-      );
-    } else {
-      return (
-        <span>
-          <Button
-            color="secondary"
-            variant="outlined"
-            onClick={this.props.beginReplying}
-          >
             Reply
           </Button>
-          {this.props.viewingReplies ? (
-            <Button onClick={this.props.hideReplies}>Hide all</Button>
-          ) : null}
-        </span>
-      );
-    }
+          <TextField
+            label="Reply"
+            multiline
+            variant="outlined"
+            margin="dense"
+            value={this.state.replyValue}
+            onChange={this.changeReplyValue}
+          />
+        </form>
+      </span>
+    );
   }
 
   onClick = e => {

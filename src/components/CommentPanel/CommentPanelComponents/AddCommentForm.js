@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { app } from "../../../App";
 import { KeyUtils, Decoration, Mark } from "slate";
 
-//Storing comments in app.state as comment data, not the nodes itself.
 class AddCommentForm extends Component {
   state = {
     value: "",
     tags: ["All"],
     tagOptions: ["Grammar", "Theme", "Content"],
-    decorations: []
+    decorations: [],
+    currSelection: ""
   };
 
   /* Ensures that the selection displays a temporary highlight to show what
@@ -17,6 +17,7 @@ class AddCommentForm extends Component {
     const decorations = [];
     const { editor } = app;
     const { selection } = editor.value;
+    this.setState({ currSelection: selection });
     const mark = Mark.create({ type: "tempAddCommentDecor" });
     const highlightDecor = Decoration.create({
       anchor: selection.start,
@@ -74,7 +75,7 @@ class AddCommentForm extends Component {
   getAndWrapCommentData = async () => {
     const { editor } = app;
     const { value } = editor;
-    const selection = value.selection;
+    const selection = this.state.currSelection;
     const date = new Date();
 
     const uniqueKey = KeyUtils.create();
@@ -95,7 +96,7 @@ class AddCommentForm extends Component {
       suggestion
     };
 
-    await editor.wrapInline({
+    await editor.wrapInlineAtRange(selection, {
       type: "comment",
       data: data
     });
@@ -128,7 +129,7 @@ class AddCommentForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { editor } = app;
-    this.props.noneditable();
+    this.props.finishCommenting();
     this.getAndWrapCommentData();
 
     // For now, this will actually remove ALL decorations.

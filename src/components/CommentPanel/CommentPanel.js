@@ -42,7 +42,7 @@ class CommentPanel extends Component {
         <FilterByTabs setFilterFn={this.setFilterFn} />
         {this.state.commenting ? (
           <AddCommentForm
-            noneditable={this.finishCommenting}
+            finishCommenting={this.finishCommenting}
             scanDocument={this.props.scanDocument}
             prevComment={this.state.prevComment}
           />
