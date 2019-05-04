@@ -96,7 +96,7 @@ class App extends Component {
   ref = editor => (this.editor = editor);
 
   // Pasting comments is broken for some reason. Figure that out later.
-  scanDocument = async () => {
+  scanDocument = () => {
     const commentNodes = this.state.value.document.getInlinesByType("comment");
 
     // Updates comments array, create map for duplicates

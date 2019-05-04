@@ -9,7 +9,8 @@ class CommentBox extends Component {
     quotedCollapsed: true,
     replying: false,
     replies: [],
-    viewReplies: false
+    viewReplies: false,
+    editing: false
   };
 
   render() {
@@ -62,13 +63,6 @@ class CommentBox extends Component {
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
           <p className="card-text">{this.props.comment.suggestion}</p>
-          <p
-            className="card-text"
-            style={{ color: "#aaaacc" }}
-            onClick={this.updateComment}
-          >
-            Update Comment
-          </p>
           <div className="replyBox" onClick={this.preventPoint}>
             <div className="reply">
               <Reply
@@ -128,13 +122,13 @@ class CommentBox extends Component {
     this.setState({ replying: !this.state.replying });
   };
 
-  addReply = stuff => {
-    if (stuff === "") {
+  addReply = replyText => {
+    if (replyText === "") {
       return;
     }
-    const xd = this.state.replies;
-    xd.push(stuff);
-    this.setState({ replies: xd });
+    const replies = this.state.replies;
+    replies.push(replyText);
+    this.setState({ replies: replies });
     this.makeReply();
   };
 

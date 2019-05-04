@@ -45,7 +45,11 @@ class CommentPanel extends Component {
         .sort(this.state.sortFn)
         .filter(this.state.filterFn)
         .map(comment => (
-          <CommentBox comment={comment} makeEditable={this.makeEditable} />
+          <CommentBox
+            comment={comment}
+            makeEditable={this.makeEditable}
+            scanDocument={this.props.scanDocument}
+          />
         ));
     }
 

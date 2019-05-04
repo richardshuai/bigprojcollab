@@ -6,7 +6,8 @@ import { KeyUtils } from "slate";
 class CommentForm extends Component {
   state = {
     value: "",
-    tags: ["All"]
+    tags: ["All"],
+    tagOptions: ["Grammar", "Theme", "Content"]
   };
 
   componentDidMount() {
@@ -79,64 +80,36 @@ class CommentForm extends Component {
   };
 
   render() {
+    const tagOptions = this.state.tagOptions.map(option => (
+      <div className="formCheck">
+        <input
+          className="formCheckInput"
+          name={option}
+          type="checkbox"
+          onChange={this.handleCheckboxChange}
+        />
+        <label className="formCheckLabel">{option}</label>
+      </div>
+    ));
+
     return (
       <div>
         <form>
           <div className="form-group">
-            <label for="comment">Comment</label>
+            <label>Comment</label>
             <input
               type="text"
               className="form-control"
-              id="comment"
               placeholder="Here's my comment"
               value={this.state.value}
               onChange={this.handleCommentChange}
             />
           </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              name="Grammar"
-              type="checkbox"
-              value=""
-              id="defaultCheck1"
-              onChange={this.handleCheckboxChange}
-            />
-            <label className="form-check-label" for="defaultCheck1">
-              Grammar
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              name="Theme"
-              type="checkbox"
-              value=""
-              id="defaultCheck1"
-              onChange={this.handleCheckboxChange}
-            />
-            <label className="form-check-label" for="defaultCheck1">
-              Theme
-            </label>
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              name="Content"
-              value=""
-              id="defaultCheck2"
-              onChange={this.handleCheckboxChange}
-            />
-            <label className="form-check-label" for="defaultCheck2">
-              Content
-            </label>
-          </div>
-
+          {tagOptions}
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={e => this.handleSubmit(e)}
+            onClick={this.handleSubmit}
           >
             Submit
           </button>
