@@ -2,16 +2,53 @@ import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import { app } from "../../../../App";
 
+/* Editing comments works by initializing state with the previous comment (given in props), 
+    changing this state as edits are being made, and rewrapping the inline with the new data on submit. */
 class EditCommentForm extends Component {
   state = {
-    inputSuggValue: this.props.comment.suggestion
+    tagOptions: ["Grammar", "Theme", "Content"],
+    inputSuggValue: this.props.comment.suggestion,
+    newTags: this.props.comment.tags
+  };
+
+  handleTagCheck = (option, event) => {
+    const newTags = this.state.newTags;
+
+    // Seemingly backwards because event.target.checked describes the state AFTER the change in checkbox?
+    if (!event.target.checked) {
+      this.setState({
+        newTags: newTags.filter(element => element !== option)
+      });
+    } else {
+      this.setState({
+        newTags: [...newTags, option]
+      });
+    }
   };
 
   render() {
     const comment = this.props.comment;
+    const tagCheckbox = this.state.tagOptions.map(option => (
+      <div>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={this.state.newTags.includes(option)}
+              onChange={this.handleTagCheck.bind(this, option)}
+            >
+              {option}
+            </Checkbox>
+          }
+          label={option}
+        />
+      </div>
+    ));
+
     return (
       <Card>
         <div>
@@ -22,6 +59,7 @@ class EditCommentForm extends Component {
         <Button variant="outlined" color="primary" onClick={this.submitEdit}>
           Update
         </Button>
+        {tagCheckbox}
       </Card>
     );
   }
@@ -65,7 +103,7 @@ class EditCommentForm extends Component {
     const start = prevComment.start;
     const end = prevComment.end;
     const quoted = prevComment.quoted;
-    const tags = prevComment.tags;
+    const tags = this.state.newTags;
     const timeStamp = prevComment.timeStamp;
     const suggestion = newSuggestion;
 
