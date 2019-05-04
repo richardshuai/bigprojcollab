@@ -24,7 +24,7 @@ export const renderBlockButton = function(type, icon) {
     <Button
       className="button"
       active={isActive}
-      onClick={event => onClickBlock(event, type)}
+      onClick={event => onClickButtonBlock(event, type)}
       id={type}
     >
       <Icon className="button-icon">{icon}</Icon>
@@ -37,7 +37,7 @@ export const hasBlock = function(type) {
   return value.blocks.some(blockNode => blockNode.type === type);
 };
 
-export const onClickBlock = function(event, type) {
+export const onClickButtonBlock = function(event, type) {
   event.preventDefault();
 
   const { editor } = app;

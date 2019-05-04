@@ -14,21 +14,13 @@ class EditCommentForm extends Component {
   render() {
     const comment = this.props.comment;
     return (
-      <Card className="editForm">
+      <Card>
         <div>
-          <em>{comment.quoted.slice(0, 15) + "..."}</em>
+          Currently editing (any details can be added):{" "}
+          <em>{comment.quoted.slice(0, 50) + "..."}</em>
         </div>
-        <Input
-          className="suggestion"
-          value={this.state.inputSuggValue}
-          onChange={this.onEditInput}
-        />
-        <Button
-          className="submitEdit"
-          variant="outlined"
-          color="primary"
-          onClick={this.submitEdit}
-        >
+        <Input value={this.state.inputSuggValue} onChange={this.onEditInput} />
+        <Button variant="outlined" color="primary" onClick={this.submitEdit}>
           Update
         </Button>
       </Card>

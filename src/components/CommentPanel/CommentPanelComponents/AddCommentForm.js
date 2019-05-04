@@ -12,7 +12,7 @@ class AddCommentForm extends Component {
   };
 
   /* Ensures that the selection displays a temporary highlight to show what
-      the user is highlighting */
+      the user is currently highlighting */
   componentDidMount() {
     const decorations = [];
     const { editor } = app;

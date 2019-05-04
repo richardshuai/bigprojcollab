@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import Card from "@material-ui/core/Card";
+
 import { app } from "../../../App";
-import Reply from "./BoxComponents/Reply";
+import ReplyForm from "./BoxComponents/ReplyForm";
 import ReplyContainer from "./BoxComponents/ReplyContainer";
 import EditCommentForm from "./BoxComponents/EditCommentForm";
 
@@ -10,15 +12,8 @@ class CommentBox extends Component {
     quotedCollapsed: true,
     replying: false,
     replies: [],
-    viewReplies: false
-  };
-
-  beginEditing = () => {
-    this.setState({ editing: true });
-  };
-
-  finishEditing = () => {
-    this.setState({ editing: false });
+    viewingReplies: false,
+    numVisibleReplies: 0
   };
 
   render() {
@@ -31,8 +26,34 @@ class CommentBox extends Component {
         />
       );
     }
+
+    // Conditionally render reply container
+    const replyContainer = this.props.isExpanded ? (
+      <Card className="replyBox" onClick={this.preventPoint}>
+        <div>
+          <ReplyForm
+            replying={this.state.replying}
+            beginReplying={this.beginReplying}
+            viewingReplies={this.state.viewingReplies}
+            addReply={this.addReply}
+            replies={this.state.replies}
+            hideReplies={this.hideReplies}
+          />
+        </div>
+        <div>
+          <ReplyContainer
+            viewingReplies={this.state.viewingReplies}
+            replies={this.state.replies}
+            hideReplies={this.hideReplies}
+            numVisibleReplies={this.state.numVisibleReplies}
+            seeMoreReplies={this.seeMoreReplies}
+          />
+        </div>
+      </Card>
+    ) : null;
+
     return (
-      <div className="card" onClick={this.pointToComment}>
+      <div className="card" onClick={this.onClickComment}>
         <div className="card-body">
           <div class="row">
             <div class="col-md-10">
@@ -77,33 +98,22 @@ class CommentBox extends Component {
             {this.state.quotedCollapsed ? "Expand" : "Collapse"}
           </button>
           <p className="card-text">{this.props.comment.suggestion}</p>
-          <div className="replyBox" onClick={this.preventPoint}>
-            <div className="reply">
-              <Reply
-                replying={this.state.replying}
-                onClick={this.makeReply}
-                onSubmit={this.addReply}
-                replies={this.state.replies}
-              />
-            </div>
-            <div className="showReplies">
-              <ReplyContainer
-                show={this.state.viewReplies}
-                replies={this.state.replies}
-                showReplies={this.showReplies}
-              />
-            </div>
-          </div>
           <p className="card-text">
             Tags: {this.props.comment.tags.slice(1).map(tag => tag + " ")}
           </p>
         </div>
+        {replyContainer}
       </div>
     );
   }
 
   preventPoint = e => {
     e.stopPropagation();
+  };
+
+  onClickComment = () => {
+    this.pointToComment();
+    this.props.expandComment(this.props.id);
   };
 
   // Obtains the node, using the comment's uniqueKey
@@ -121,6 +131,7 @@ class CommentBox extends Component {
 
   onClickQuotedCollapse = event => {
     this.setState({ quotedCollapsed: !this.state.quotedCollapsed });
+    event.stopPropagation();
   };
 
   processCollapsed = () => {
@@ -130,22 +141,46 @@ class CommentBox extends Component {
     return this.props.comment.quoted;
   };
 
-  makeReply = () => {
-    this.setState({ replying: !this.state.replying });
-  };
-
   addReply = replyText => {
     if (replyText === "") {
+      this.finishReplying();
       return;
     }
     const replies = this.state.replies;
     replies.push(replyText);
     this.setState({ replies: replies });
-    this.makeReply();
+    this.seeMoreReplies(1);
+    this.finishReplying();
   };
 
-  showReplies = () => {
-    this.setState({ viewReplies: !this.state.viewReplies });
+  beginReplying = () => {
+    this.setState({ replying: true });
+  };
+
+  finishReplying = () => {
+    this.setState({ replying: false });
+  };
+
+  hideReplies = () => {
+    this.setState({ viewingReplies: false, numVisibleReplies: 0 });
+  };
+
+  seeMoreReplies = num => {
+    this.setState({
+      viewingReplies: true,
+      numVisibleReplies: Math.min(
+        this.state.numVisibleReplies + num,
+        this.state.replies.length
+      )
+    });
+  };
+
+  beginEditing = () => {
+    this.setState({ editing: true });
+  };
+
+  finishEditing = () => {
+    this.setState({ editing: false });
   };
 }
 

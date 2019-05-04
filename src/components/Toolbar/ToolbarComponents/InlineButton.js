@@ -12,7 +12,7 @@ export const renderInlineButton = function(type, icon) {
     <Button
       className="button"
       active={isActive}
-      onClick={event => onClickInline(event, type)}
+      onClick={event => onClickButtonInline(event, type)}
       id={type}
     >
       <Icon className="button-icon">{icon}</Icon>{" "}
@@ -24,7 +24,7 @@ export const hasInline = function(type) {
   return app.state.value.inlines.some(inline => inline.type === type);
 };
 
-const onClickInline = function(event, type) {
+const onClickButtonInline = function(event, type) {
   event.preventDefault();
 
   if (type === "comment") {

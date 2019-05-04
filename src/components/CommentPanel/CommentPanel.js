@@ -3,22 +3,19 @@ import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 import FilterByTabs from "./CommentPanelComponents/FilterByTabs";
 import AddCommentForm from "./CommentPanelComponents/AddCommentForm";
 import CommentBox from "./CommentPanelComponents/CommentBox";
+import shortid from "shortid";
 
 export let panel;
 class CommentPanel extends Component {
   state = {
     commenting: false,
-    prevComment: {}
+    prevComment: {},
+    expandedID: ""
   };
 
   componentDidMount() {
     panel = this;
   }
-
-  /* Called from the inline button handler handleCommentClick */
-  beginCommenting = () => {
-    this.setState({ commenting: true });
-  };
 
   render() {
     /* Filters and sorts comments to be seen */
@@ -31,6 +28,10 @@ class CommentPanel extends Component {
           <CommentBox
             comment={comment}
             scanDocument={this.props.scanDocument}
+            expandComment={this.expandComment}
+            isExpanded={this.state.expandedID === comment.uniqueKey}
+            key={comment.uniqueKey}
+            id={comment.uniqueKey}
           />
         ));
     }
@@ -41,7 +42,7 @@ class CommentPanel extends Component {
         <FilterByTabs setFilterFn={this.setFilterFn} />
         {this.state.commenting ? (
           <AddCommentForm
-            noneditable={this.noneditable}
+            noneditable={this.finishCommenting}
             scanDocument={this.props.scanDocument}
             prevComment={this.state.prevComment}
           />
@@ -50,12 +51,6 @@ class CommentPanel extends Component {
       </div>
     );
   }
-
-  noneditable = () => {
-    this.setState({
-      commenting: false
-    });
-  };
 
   setSortFn = sortFn => {
     this.setState({
@@ -70,6 +65,25 @@ class CommentPanel extends Component {
       filterFn: filterFn
     });
     this.props.scanDocument();
+  };
+
+  /* Called from the inline button handler handleCommentClick */
+  beginCommenting = () => {
+    this.setState({ commenting: true });
+  };
+
+  finishCommenting = () => {
+    this.setState({
+      commenting: false
+    });
+  };
+
+  expandComment = id => {
+    if (this.state.expandedID === id) {
+      this.setState({ expandedID: "" });
+    } else {
+      this.setState({ expandedID: id });
+    }
   };
 }
 

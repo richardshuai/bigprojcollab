@@ -11,7 +11,7 @@ export const renderMarkButton = (type, icon) => {
     <Button
       className="button"
       active={isActive}
-      onClick={event => onClickMark(event, type)}
+      onClick={event => onClickButtonMark(event, type)}
       id={type}
     >
       <Icon className="button-icon">{icon}</Icon>
@@ -24,7 +24,7 @@ export const hasMark = type => {
   return value.activeMarks.some(mark => mark.type === type);
 };
 
-export const onClickMark = (event, type) => {
+export const onClickButtonMark = (event, type) => {
   event.preventDefault();
   app.editor.toggleMark(type);
 };
