@@ -3,7 +3,6 @@ import SortByDropdown from "./CommentPanelComponents/SortByDropdown";
 import FilterByTabs from "./CommentPanelComponents/FilterByTabs";
 import AddCommentForm from "./CommentPanelComponents/AddCommentForm";
 import CommentBox from "./CommentPanelComponents/CommentBox";
-import shortid from "shortid";
 
 export let panel;
 class CommentPanel extends Component {

@@ -4,7 +4,6 @@ import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
 
 import { app } from "../../../../App";
-import { Range } from "slate";
 
 class EditCommentForm extends Component {
   state = {
