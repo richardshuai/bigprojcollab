@@ -36,22 +36,26 @@ class App extends Component {
 
   componentDidMount() {
     app = this;
-    const socket = socketIOClient();
-    socket.on("newUser", existingContent => {
-      const updateValue = JSON.parse(existingContent);
-      this.setState({ value: Value.fromJSON(updateValue) });
-    });
-    socket.on("receiveEdit", newContent => {
-      this.setState({ value: Value.fromJSON(JSON.parse(newContent)) });
-    });
-    this.setState({ socket: socket, response: true });
+    // const socket = socketIOClient();
+    // socket.on("newUser", existingContent => {
+    //   const updateValue = JSON.parse(existingContent);
+    //   this.setState({ value: Value.fromJSON(updateValue) });
+    // });
+    // socket.on("receiveEdit", newContent => {
+    //   this.setState({ value: Value.fromJSON(JSON.parse(newContent)) });
+    // });
+    // this.setState({ socket: socket, response: true });
 
     const scanner = setInterval(() => this.scanDocument(), 2000);
   }
 
   render() {
-    if (!this.state.response) {
-      return "Loading sockets...";
+    // if (!this.state.response) {
+    //   return "Loading sockets...";
+    // }
+    /* Change so that app is passed in as a prop when possible? */
+    if (!app) {
+      return "Loading...";
     }
     return (
       <html lang="en">
@@ -59,7 +63,6 @@ class App extends Component {
         <body>
           <div className="app-container">
             <div className="toolbar-container">
-              {/* Change this so it uses app instead of this.state? */}
               <Toolbar state={this.state} editor={this.editor} />
             </div>
             <div className="editor-container">

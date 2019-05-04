@@ -13,9 +13,7 @@ const handleCommentClick = async () => {
 
     //TODO: Remove from CommentPanel
   } else if (value.selection.isExpanded) {
-    panel.setState({
-      commenting: true
-    });
+    panel.beginCommenting();
   }
 };
 

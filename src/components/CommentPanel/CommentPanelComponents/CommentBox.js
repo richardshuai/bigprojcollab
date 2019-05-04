@@ -1,19 +1,36 @@
 import React, { Component } from "react";
 import { app } from "../../../App";
-import Reply from "./Reply";
-import ReplyContainer from "./ReplyContainer";
-import { Range } from "slate";
+import Reply from "./BoxComponents/Reply";
+import ReplyContainer from "./BoxComponents/ReplyContainer";
+import EditCommentForm from "./BoxComponents/EditCommentForm";
 
 class CommentBox extends Component {
   state = {
+    editing: false,
     quotedCollapsed: true,
     replying: false,
     replies: [],
-    viewReplies: false,
-    editing: false
+    viewReplies: false
+  };
+
+  beginEditing = () => {
+    this.setState({ editing: true });
+  };
+
+  finishEditing = () => {
+    this.setState({ editing: false });
   };
 
   render() {
+    if (this.state.editing) {
+      return (
+        <EditCommentForm
+          comment={this.props.comment}
+          scanDocument={this.props.scanDocument}
+          finishEditing={this.finishEditing}
+        />
+      );
+    }
     return (
       <div className="card" onClick={this.pointToComment}>
         <div className="card-body">
@@ -29,16 +46,13 @@ class CommentBox extends Component {
                 <span class="caret" />
               </button>
               <ul class="dropdown-menu">
-                <div className="dropdown-item" onClick={this.editComment}>
+                <div className="dropdown-item" onClick={this.beginEditing}>
                   Edit
                 </div>
                 <div className="dropdown-item" onClick={this.resolveComment}>
                   Resolve
                 </div>
-                <div
-                  className="dropdown-item"
-                  onClick={e => this.deleteComment}
-                >
+                <div className="dropdown-item" onClick={this.deleteComment}>
                   Delete
                 </div>
               </ul>
@@ -81,20 +95,18 @@ class CommentBox extends Component {
             </div>
           </div>
           <p className="card-text">
-            Tags: {this.props.comment.tags.map(tag => tag + " ")}
+            Tags: {this.props.comment.tags.slice(1).map(tag => tag + " ")}
           </p>
         </div>
       </div>
     );
   }
 
-  // This can probably be changed now that we're scanning every two seconds.
-  // Make sure to call scan document before doing so though.
-
   preventPoint = e => {
     e.stopPropagation();
   };
 
+  // Obtains the node, using the comment's uniqueKey
   pointToComment = () => {
     const commentNodes = app.editor.value.document.getInlinesByType("comment");
 
@@ -134,21 +146,6 @@ class CommentBox extends Component {
 
   showReplies = () => {
     this.setState({ viewReplies: !this.state.viewReplies });
-  };
-
-  editComment = e => {
-    e.stopPropagation();
-    const prevComment = this.props.comment;
-    this.props.makeEditable(prevComment);
-
-    // Delete previous comment
-    const prevRange = Range.create({
-      anchor: prevComment.start,
-      focus: prevComment.end
-    });
-
-    // Put at very end
-    app.editor.unwrapInlineAtRange(prevRange);
   };
 }
 

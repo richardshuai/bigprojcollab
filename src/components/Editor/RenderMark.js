@@ -22,6 +22,12 @@ export const renderMark = (props, editor, next) => {
           {children}
         </font>
       );
+    case "tempAddCommentDecor":
+      return (
+        <span style={{ backgroundColor: "#FFFF33" }} {...attributes}>
+          {children}
+        </span>
+      );
 
     default:
       return next();
