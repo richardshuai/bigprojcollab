@@ -22,9 +22,9 @@ export const renderMark = (props, editor, next) => {
           {children}
         </font>
       );
-    case "tempAddCommentDecor":
+    case "filterAllDecor":
       return (
-        <span style={{ backgroundColor: "#FFFF33" }} {...attributes}>
+        <span style={{ backgroundColor: "#000000" }} {...attributes}>
           {children}
         </span>
       );

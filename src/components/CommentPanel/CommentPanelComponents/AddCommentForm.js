@@ -1,35 +1,30 @@
 import React, { Component } from "react";
 import { app } from "../../../App";
-import { KeyUtils, Decoration, Mark } from "slate";
+import { KeyUtils } from "slate";
 
 class AddCommentForm extends Component {
   state = {
     value: "",
     tags: ["All"],
     tagOptions: ["Grammar", "Theme", "Content"],
-    decorations: [],
-    currSelection: ""
+    tempKey: KeyUtils.create()
   };
 
-  /* Ensures that the selection displays a temporary highlight to show what
-      the user is currently highlighting */
+  /* Ensures that the selection displays a temporary inline highlight to show what
+      the user is currently highlighting. Then, this inline is used when actually 
+      wrapping data inline */
   componentDidMount() {
-    const decorations = [];
     const { editor } = app;
     const { selection } = editor.value;
-    this.setState({ currSelection: selection });
-    const mark = Mark.create({ type: "tempAddCommentDecor" });
-    const highlightDecor = Decoration.create({
-      anchor: selection.start,
-      focus: selection.end,
-      mark: mark
-    });
 
-    this.setState({ decorations: [...decorations, highlightDecor] }, () =>
-      editor.withoutSaving(() => {
-        editor.setDecorations(this.state.decorations);
-      })
-    );
+    editor.wrapInlineAtRange(selection, {
+      type: "tempAddComment",
+      data: {
+        uniqueKey: this.state.tempKey,
+        start: selection.start,
+        end: selection.end
+      }
+    });
   }
 
   render() {
@@ -75,16 +70,25 @@ class AddCommentForm extends Component {
   getAndWrapCommentData = async () => {
     const { editor } = app;
     const { value } = editor;
-    const selection = this.state.currSelection;
+
+    // Not necessary to filter if there's only one comment being added at a time.
+    // Warning: uniqueKey isn't unique with splitting lines.
+    const tempInline = value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === this.state.tempKey
+    );
+
     const date = new Date();
 
-    const uniqueKey = KeyUtils.create();
-    const start = selection.start;
-    const end = selection.end;
+    const uniqueKey = this.state.tempKey;
+    const start = tempInline.data.get("start").moveToStartOfNode(tempInline);
+    const end = tempInline.data.get("end").moveToEndOfNode(tempInline);
     const quoted = value.fragment.text;
     const tags = this.state.tags;
     const suggestion = this.state.value;
     const timeStamp = date.getTime();
+    const isFocused = false;
 
     const data = {
       uniqueKey,
@@ -93,12 +97,16 @@ class AddCommentForm extends Component {
       quoted,
       tags,
       timeStamp,
-      suggestion
+      suggestion,
+      isFocused
     };
 
-    await editor.wrapInlineAtRange(selection, {
+    // Use the real key to find node, not the data.uniqueKey
+    await editor.replaceNodeByKey(tempInline.key, {
+      object: "inline",
       type: "comment",
-      data: data
+      data: data,
+      nodes: tempInline.nodes
     });
 
     this.props.scanDocument();
@@ -128,12 +136,8 @@ class AddCommentForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { editor } = app;
     this.props.finishCommenting();
     this.getAndWrapCommentData();
-
-    // For now, this will actually remove ALL decorations.
-    editor.setDecorations([]);
   };
 }
 export default AddCommentForm;

@@ -50,7 +50,7 @@ class CommentBox extends Component {
     }
 
     return (
-      <div className="card" onClick={this.onClickComment}>
+      <div className="card" onClick={this.onClickCommentBox}>
         <div className="card-body">
           <div class="row">
             <div class="col-md-10">
@@ -60,6 +60,7 @@ class CommentBox extends Component {
               <button
                 class="btn btn-min btn-sm dropdown-toggle"
                 data-toggle="dropdown"
+                onClick={this.preventPoint}
               >
                 <span class="caret" />
               </button>
@@ -108,23 +109,8 @@ class CommentBox extends Component {
     e.stopPropagation();
   };
 
-  onClickComment = () => {
-    this.pointToComment();
-    this.props.expandComment(this.props.id);
-    this.setState({ numVisibleReplies: 1 });
-  };
-
-  // Obtains the node, using the comment's uniqueKey
-  pointToComment = () => {
-    const commentNodes = app.editor.value.document.getInlinesByType("comment");
-
-    const target = commentNodes
-      .filter(
-        node => node.data.get("uniqueKey") === this.props.comment.uniqueKey
-      )
-      .first();
-    app.editor.focus();
-    app.editor.moveToStartOfNode(target);
+  onClickCommentBox = () => {
+    this.props.expandCommentAndFocus(this.props.id, false);
   };
 
   toggleQuotedCollapse = event => {
