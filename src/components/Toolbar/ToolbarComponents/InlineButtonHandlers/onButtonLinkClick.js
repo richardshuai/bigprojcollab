@@ -1,7 +1,7 @@
 import { app } from "../../../../App";
 import { hasInline } from "../InlineButton";
 
-const handleLinkClick = () => {
+const onButtonLinkClick = () => {
   const { editor } = app;
   const { value } = editor;
 
@@ -44,4 +44,4 @@ const wrapLink = function(editor, href) {
   editor.moveToEnd();
 };
 
-export default handleLinkClick;
+export default onButtonLinkClick;

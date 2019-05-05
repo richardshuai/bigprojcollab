@@ -80,10 +80,11 @@ class EditCommentForm extends Component {
 
     // Get the first node in the document that matches uniqueKey.
     // Warning: uniqueKey isn't unique with splitting lines.
-    let commentNodes = app.editor.value.document.getInlinesByType("comment");
-    let target = commentNodes
-      .filter(node => node.data.get("uniqueKey") === prevComment.uniqueKey)
-      .first();
+    const target = editor.value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === prevComment.uniqueKey
+    );
 
     // Replace node. Specify inline, data, nodes (children).
     await editor.replaceNodeByKey(target.key, {

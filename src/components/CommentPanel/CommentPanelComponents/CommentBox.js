@@ -116,16 +116,16 @@ class CommentBox extends Component {
   };
 
   // Obtains the node, using the comment's uniqueKey
+  // Warning: uniqueKey isn't unique with splitting lines.
   pointToComment = () => {
-    const commentNodes = app.editor.value.document.getInlinesByType("comment");
-
-    const target = commentNodes
-      .filter(
-        node => node.data.get("uniqueKey") === this.props.comment.uniqueKey
-      )
-      .first();
-    app.editor.focus();
-    app.editor.moveToStartOfNode(target);
+    const editor = app.editor;
+    const target = editor.value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === this.props.comment.uniqueKey
+    );
+    editor.focus();
+    editor.moveToStartOfNode(target);
   };
 
   toggleQuotedCollapse = event => {

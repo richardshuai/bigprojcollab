@@ -2,8 +2,8 @@ import React from "react";
 import { app } from "../../../App";
 import { Button } from "../../Utils/Buttons";
 import Icon from "@material-ui/core/Icon";
-import handleCommentClick from "./InlineButtonHandlers/handleCommentClick";
-import handleLinkClick from "./InlineButtonHandlers/handleLinkClick";
+import onButtonCommentClick from "./InlineButtonHandlers/onButtonCommentClick";
+import onButtonLinkClick from "./InlineButtonHandlers/onButtonLinkClick";
 
 /* Inlines */
 export const renderInlineButton = function(type, icon) {
@@ -28,8 +28,8 @@ const onClickButtonInline = function(event, type) {
   event.preventDefault();
 
   if (type === "comment") {
-    handleCommentClick();
+    onButtonCommentClick();
   } else if (type === "link") {
-    handleLinkClick();
+    onButtonLinkClick();
   }
 };

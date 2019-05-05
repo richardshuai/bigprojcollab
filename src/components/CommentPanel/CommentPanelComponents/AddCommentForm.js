@@ -14,7 +14,6 @@ class AddCommentForm extends Component {
       the user is currently highlighting. Then, this inline is used when actually 
       wrapping data inline */
   componentDidMount() {
-    const decorations = [];
     const { editor } = app;
     const { selection } = editor.value;
 
@@ -73,10 +72,12 @@ class AddCommentForm extends Component {
     const { value } = editor;
 
     // Not necessary to filter if there's only one comment being added at a time.
-    const tempInline = value.document
-      .getInlinesByType("tempAddComment")
-      .filter(node => node.data.get("uniqueKey") === this.state.tempKey)
-      .first();
+    // Warning: uniqueKey isn't unique with splitting lines.
+    const tempInline = value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === this.state.tempKey
+    );
 
     const date = new Date();
 
@@ -133,12 +134,8 @@ class AddCommentForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { editor } = app;
     this.props.finishCommenting();
     this.getAndWrapCommentData();
-
-    // For now, this will actually remove ALL decorations.
-    editor.setDecorations([]);
   };
 }
 export default AddCommentForm;

@@ -106,7 +106,9 @@ class App extends Component {
 
   // Pasting comments is broken for some reason. Figure that out later.
   scanDocument = () => {
-    const commentNodes = this.state.value.document.getInlinesByType("comment");
+    const commentNodes = this.state.value.document.filterDescendants(
+      node => node.type === "comment"
+    );
 
     // Updates comments array, create map for duplicates
     const updatedComments = [];

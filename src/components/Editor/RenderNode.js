@@ -82,7 +82,6 @@ const displayTagProperties = props => {
   const { attributes, children, node } = props;
 
   const filter = app.state.activeFilter;
-  console.log(filter);
   if (filter === "All") {
     return (
       <span
@@ -132,4 +131,5 @@ const onClickLink = function(href, event) {
 
 const onClickComment = function(commentData, event) {
   app.expandCommentFromInline(commentData.get("uniqueKey"));
+  event.stopPropagation();
 };
