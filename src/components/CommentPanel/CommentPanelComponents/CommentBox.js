@@ -60,6 +60,7 @@ class CommentBox extends Component {
               <button
                 class="btn btn-min btn-sm dropdown-toggle"
                 data-toggle="dropdown"
+                onClick={this.preventPoint}
               >
                 <span class="caret" />
               </button>

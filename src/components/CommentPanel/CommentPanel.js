@@ -63,6 +63,7 @@ class CommentPanel extends Component {
     this.setState({
       filterFn: filterFn
     });
+    this.props.setActiveFilter(filter);
     this.props.scanDocument();
   };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { app } from "../../App";
 
 export const renderNode = function(props, editor, next) {
   const { attributes, children, node } = props;
@@ -51,16 +52,18 @@ export const renderNode = function(props, editor, next) {
         </a>
       );
     }
-    case "comment": {
+    case "tempAddComment": {
       return (
-        <span
-          style={{ backgroundColor: "#09fe69" }}
-          onClick={onClickComment.bind(this, node.data)}
-          {...attributes}
-        >
+        <span style={{ backgroundColor: "#FFFF33" }} {...attributes}>
           {children}
         </span>
       );
+    }
+    case "comment": {
+      if (hasFilterTag(node)) {
+        return displayTagProperties(props);
+      }
+      return next();
     }
 
     default:
@@ -69,6 +72,47 @@ export const renderNode = function(props, editor, next) {
 };
 
 /* Helper functions */
+
+const hasFilterTag = node => {
+  return node.data.get("tags").includes(app.state.activeFilter);
+};
+
+/* Allows separate handling for different comment tags, depending on the filter */
+const displayTagProperties = props => {
+  const { attributes, children, node } = props;
+
+  const filter = app.state.activeFilter;
+  console.log(filter);
+  if (filter === "All") {
+    return (
+      <span
+        style={{ backgroundColor: "#FFD500" }}
+        onClick={onClickComment.bind(this, node.data)}
+        {...attributes}
+      >
+        {children}
+      </span>
+    );
+  } else if (filter === "Content") {
+    return (
+      <span style={{ backgroundColor: "#FA84FA" }} {...attributes}>
+        {children}
+      </span>
+    );
+  } else if (filter === "Theme") {
+    return (
+      <span style={{ backgroundColor: "#84E3FA" }} {...attributes}>
+        {children}
+      </span>
+    );
+  } else if (filter === "Grammar") {
+    return (
+      <span style={{ backgroundColor: "#84FAA8" }} {...attributes}>
+        {children}
+      </span>
+    );
+  }
+};
 
 const onClickLink = function(href, event) {
   window.open(href, "_blank");

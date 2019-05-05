@@ -19,19 +19,22 @@ import initialValue from "./initialValue.json";
 
 /* Plugins */
 import CollapseOnEscape from "slate-collapse-on-escape";
-import socketIOClient from "socket.io-client";
+import ForceRefresh from "./components/Editor/Plugins/ForceRefresh";
+
+// import socketIOClient from "socket.io-client";
 
 /* Export app for use by handlers */
 export let app;
 
-const plugins = [CollapseOnEscape()];
+const plugins = [CollapseOnEscape(), ForceRefresh()];
 
 class App extends Component {
   state = {
     value: Value.fromJSON(initialValue),
     socket: "uninitialized",
     response: false,
-    comments: []
+    comments: [],
+    activeFilter: "All"
   };
 
   componentDidMount() {
@@ -46,7 +49,8 @@ class App extends Component {
     // });
     // this.setState({ socket: socket, response: true });
 
-    const scanner = setInterval(() => this.scanDocument(), 2000);
+    // const scanner = setInterval(() => this.scanDocument(), 2000);
+    setInterval(() => this.scanDocument(), 2000);
   }
 
   render() {
@@ -84,6 +88,7 @@ class App extends Component {
               <CommentPanel
                 comments={this.state.comments}
                 scanDocument={this.scanDocument}
+                setActiveFilter={this.setActiveFilter}
               />
             </div>
             <div className="video-container">
@@ -135,6 +140,13 @@ class App extends Component {
     data.timeStamp = node.data.get("timeStamp");
     data.suggestion = node.data.get("suggestion");
     return data;
+  };
+
+  /* For rendering different colors. activeFilter state is used in renderNode().
+     Blurring requiring to render entire document? (Otherwise, it'll only render the node at the current
+     selection.) */
+  setActiveFilter = filter => {
+    this.setState({ activeFilter: filter }, () => this.editor.refresh());
   };
 }
 

@@ -10,8 +10,6 @@ const handleCommentClick = async () => {
 
   if (hasInline("comment")) {
     editor.unwrapInline("comment");
-
-    //TODO: Remove from CommentPanel
   } else if (value.selection.isExpanded) {
     panel.beginCommenting();
   }
