@@ -42,14 +42,16 @@ class CommentPanel extends Component {
       <div>
         <SortByDropdown setSortFn={this.setSortFn} />
         <FilterByTabs setFilterFn={this.setFilterFn} />
-        {this.state.commenting ? (
-          <AddCommentForm
-            finishCommenting={this.finishCommenting}
-            scanDocument={this.props.scanDocument}
-            prevComment={this.state.prevComment}
-          />
-        ) : null}
-        {visibleComments}
+        <div style={this.commentContainerStyles}>
+          {this.state.commenting ? (
+            <AddCommentForm
+              finishCommenting={this.finishCommenting}
+              scanDocument={this.props.scanDocument}
+              prevComment={this.state.prevComment}
+            />
+          ) : null}
+          {visibleComments}
+        </div>
       </div>
     );
   }
@@ -80,6 +82,7 @@ class CommentPanel extends Component {
     this.setState({
       commenting: false
     });
+    app.editor.focus().moveToFocus();
   };
 
   /* Handling clicking the commentBox from the commentPanel.
@@ -149,6 +152,12 @@ class CommentPanel extends Component {
   pointToComment = async target => {
     await app.editor.focus();
     app.editor.moveToStartOfNode(target);
+  };
+
+  /* Styling */
+  commentContainerStyles = {
+    overflowY: "scroll",
+    height: "430px"
   };
 }
 
