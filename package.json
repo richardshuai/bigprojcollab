@@ -20,6 +20,7 @@
     "react-scripts": "2.1.8",
     "react-scroll-into-view": "^1.5.0",
     "react-sticky": "^6.0.3",
+    "react-webcam": "^1.1.1",
     "shortid": "^2.2.14",
     "slate": "^0.44.12",
     "slate-collapse-on-escape": "^0.8.1",
