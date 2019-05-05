@@ -16,11 +16,6 @@ class FontDropdown extends Component {
     this.props.editor.focus();
   };
 
-  hasFontMark = () => {
-    const { value } = this.props.state;
-    return value.marks.some(mark => mark.type === "fontFamily");
-  };
-
   getAllSelectedFontsArray = () => {
     const { value } = this.props.state;
     return value.marks.filter(mark => mark.type === "fontFamily");

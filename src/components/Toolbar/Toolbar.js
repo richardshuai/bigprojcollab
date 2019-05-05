@@ -5,6 +5,7 @@ import "../../css/Toolbar.css";
 //Buttons
 import FontDropdown from "./ToolbarComponents/FontDropdown";
 import SizeDropdown from "./ToolbarComponents/SizeDropdown";
+import TextColoringPalette from "./ToolbarComponents/TextColoringPalette";
 import { renderMarkButton } from "./ToolbarComponents/MarkButton";
 import { renderInlineButton } from "./ToolbarComponents/InlineButton";
 import { renderBlockButton } from "./ToolbarComponents/BlockButton";
@@ -24,6 +25,10 @@ class Toolbar extends Component {
         />
         <SizeDropdown
           className="dropdown"
+          state={this.props.state}
+          editor={this.props.editor}
+        />
+        <TextColoringPalette
           state={this.props.state}
           editor={this.props.editor}
         />
