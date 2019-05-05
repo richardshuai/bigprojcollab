@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { app } from "../../../App";
 import { KeyUtils } from "slate";
+import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import AddComment from "@material-ui/icons/AddComment";
+
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
 
 class AddCommentForm extends Component {
   state = {
@@ -29,8 +36,8 @@ class AddCommentForm extends Component {
 
   render() {
     /* Generates HTML for tag options */
-    const tagOptions = this.state.tagOptions.map(option => (
-      <div className="formCheck">
+    const tagOptions = this.state.tagOptions.map((option, index) => (
+      <div className="formCheck" key={index}>
         <input
           className="formCheckInput"
           name={option}
@@ -42,36 +49,100 @@ class AddCommentForm extends Component {
     ));
 
     return (
-      <div>
-        <form>
-          <div className="form-group">
-            <label>Comment</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Here's my comment"
-              value={this.state.value}
-              onChange={this.handleCommentChange}
-            />
-          </div>
-          {tagOptions}
-          <button
-            type="submit"
-            className="btn btn-primary"
+      <Card>
+        <TextField
+          id="Comment"
+          placeholder="Here's my comment"
+          value={this.state.value}
+          onChange={this.handleCommentChange}
+          onKeyDown={this.onInputKeyDown}
+          autoFocus
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AddComment />
+              </InputAdornment>
+            )
+          }}
+        />
+
+        {tagOptions}
+        <span>
+          <Button
+            color="primary"
+            variant="contained"
             onClick={this.handleSubmit}
           >
             Submit
-          </button>
-        </form>
-      </div>
+          </Button>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={this.handleCancel}
+          >
+            Cancel
+          </Button>
+        </span>
+      </Card>
     );
   }
 
+  /* Allows for key shortcuts to be pressed to submit or cancel */
+  onInputKeyDown = e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      this.handleSubmit(e);
+    } else if (e.keyCode === 27) {
+      e.preventDefault();
+      this.handleCancel(e);
+    }
+  };
+
+  handleCancel = event => {
+    const { editor } = app;
+    const tempInline = editor.value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === this.state.tempKey
+    );
+
+    editor.unwrapInlineByKey(tempInline.key, "tempAddComment");
+    this.props.finishCommenting();
+  };
+
+  handleCommentChange = event => {
+    const value = event.target.value;
+    this.setState({
+      value: value
+    });
+  };
+
+  handleCheckboxChange = event => {
+    const target = event.target;
+    const value = target.checked;
+    const name = target.name;
+    if (value === true) {
+      if (!this.state.tags.includes(name)) {
+        this.setState(prevState => ({
+          tags: [...prevState.tags, name]
+        }));
+      }
+    } else {
+      this.state.tags.splice(this.state.tags.indexOf(name), 1);
+    }
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.getAndWrapCommentData();
+    this.props.finishCommenting();
+  };
+
+  /* Uses the temporary inline to get real-time selection, and then rewraps. */
   getAndWrapCommentData = async () => {
     const { editor } = app;
     const { value } = editor;
 
-    // Not necessary to filter if there's only one comment being added at a time.
     // Warning: uniqueKey isn't unique with splitting lines.
     const tempInline = value.document.findDescendant(
       node =>
@@ -110,34 +181,6 @@ class AddCommentForm extends Component {
     });
 
     this.props.scanDocument();
-  };
-
-  handleCommentChange = event => {
-    const value = event.target.value;
-    this.setState({
-      value: value
-    });
-  };
-
-  handleCheckboxChange = event => {
-    const target = event.target;
-    const value = target.checked;
-    const name = target.name;
-    if (value === true) {
-      if (!this.state.tags.includes(name)) {
-        this.setState(prevState => ({
-          tags: [...prevState.tags, name]
-        }));
-      }
-    } else {
-      this.state.tags.splice(this.state.tags.indexOf(name), 1);
-    }
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.finishCommenting();
-    this.getAndWrapCommentData();
   };
 }
 export default AddCommentForm;

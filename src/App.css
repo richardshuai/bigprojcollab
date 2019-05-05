@@ -23,7 +23,7 @@ body {
 
 .editor-container {
   grid-column: 2/4;
-  grid-row: 2/8;
+  grid-row: 2/7;
   float: right;
   background-color: #eeeeee;
   max-height: 80%;
@@ -33,14 +33,14 @@ body {
 }
 
 .comment-panel-container {
-  grid-row: 2/8;
+  grid-row: 2/7;
   max-height: 80%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   border: black 5px solid;
 }
 
 .video-container {
-  grid-row: 2/8;
+  grid-row: 2/7;
   max-height: 80%;
   border: black 5px solid;
 }

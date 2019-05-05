@@ -31,32 +31,36 @@ export class SortByDropdown extends Component {
   render() {
     const menuOptions = [];
     for (const option of Object.keys(this.state.sortOptions)) {
-      menuOptions.push(
-        <div
-          className="dropdown-item"
-          onClick={this.onClickButton.bind(this, option)}
-        >
-          {option}
-        </div>
-      );
+      menuOptions.push(option);
     }
 
     return (
-      <div className="dropdown">
-        <button
-          className="btn btn-secondary dropdown-toggle"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          {this.state.text}
-        </button>
+      <div>
+        <div className="dropdown" style={this.dropDownStyles}>
+          <button
+            className="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {this.state.text}
+          </button>
 
-        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          {menuOptions}
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {menuOptions.map((option, index) => (
+              <div
+                className="dropdown-item"
+                onClick={this.onClickButton.bind(this, option)}
+                key={index}
+              >
+                {option}
+              </div>
+            ))}
+          </div>
         </div>
+        <div style={{ height: "30px" }} />
       </div>
     );
   }
@@ -89,6 +93,11 @@ export class SortByDropdown extends Component {
     } else {
       return 0;
     }
+  };
+
+  /* Styling */
+  dropDownStyles = {
+    position: "fixed"
   };
 }
 

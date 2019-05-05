@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
 
-import { app } from "../../../App";
 import ReplyForm from "./BoxComponents/ReplyForm";
 import ReplyContainer from "./BoxComponents/ReplyContainer";
 import EditCommentForm from "./BoxComponents/EditCommentForm";
@@ -9,7 +8,7 @@ import EditCommentForm from "./BoxComponents/EditCommentForm";
 class CommentBox extends Component {
   state = {
     editing: false,
-    quotedCollapsed: true,
+    quotedIsCollapsed: true,
     replies: [],
     viewingReplies: false,
     numVisibleReplies: 1
@@ -52,19 +51,19 @@ class CommentBox extends Component {
     return (
       <div className="card" onClick={this.onClickCommentBox}>
         <div className="card-body">
-          <div class="row">
-            <div class="col-md-10">
+          <div className="row">
+            <div className="col-md-10">
               <h5 className="card-title"> Anonymous </h5>
             </div>
-            <div class="col-md-1">
+            <div className="col-md-1">
               <button
-                class="btn btn-min btn-sm dropdown-toggle"
+                className="btn btn-min btn-sm dropdown-toggle"
                 data-toggle="dropdown"
                 onClick={this.preventPoint}
               >
-                <span class="caret" />
+                <span className="caret" />
               </button>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <div className="dropdown-item" onClick={this.beginEditing}>
                   Edit
                 </div>
@@ -81,19 +80,20 @@ class CommentBox extends Component {
           <h6 className="card-subtitle mb-2 text-muted">
             {new Date(this.props.comment.timeStamp).toString()}
           </h6>
-          <p className="card-text">
+          <div className="card-text">
             <em>
-              {this.state.quotedCollapsed
+              {this.state.quotedIsCollapsed
                 ? this.truncateQuoted()
                 : this.props.comment.quoted}
+              {this.displayFragments()}
             </em>
-          </p>
+          </div>
           <button
             type="button"
             className="btn btn-secondary"
             onClick={this.toggleQuotedCollapse}
           >
-            {this.state.quotedCollapsed ? "Expand" : "Collapse"}
+            {this.state.quotedIsCollapsed ? "Expand" : "Collapse"}
           </button>
           <p className="card-text">{this.props.comment.suggestion}</p>
           <p className="card-text">
@@ -110,11 +110,11 @@ class CommentBox extends Component {
   };
 
   onClickCommentBox = () => {
-    this.props.expandCommentAndFocus(this.props.id, false);
+    this.props.expandCommentAndFocus(this.props.id);
   };
 
   toggleQuotedCollapse = event => {
-    this.setState({ quotedCollapsed: !this.state.quotedCollapsed });
+    this.setState({ quotedIsCollapsed: !this.state.quotedIsCollapsed });
     event.stopPropagation();
   };
 
@@ -123,6 +123,14 @@ class CommentBox extends Component {
       return this.props.comment.quoted.slice(0, 30) + "...";
     }
     return this.props.comment.quoted;
+  };
+
+  displayFragments = () => {
+    if (!this.state.quotedIsCollapsed) {
+      return this.props.comment.fragments.map(fragment => (
+        <div>{fragment.quoted}</div>
+      ));
+    }
   };
 
   addReply = replyText => {

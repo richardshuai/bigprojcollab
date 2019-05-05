@@ -20,13 +20,14 @@ import initialValue from "./initialValue.json";
 /* Plugins */
 import CollapseOnEscape from "slate-collapse-on-escape";
 import ForceRefresh from "./components/Editor/Plugins/ForceRefresh";
+import SoftBreak from "slate-soft-break";
 
 // import socketIOClient from "socket.io-client";
 
 /* Export app for use by handlers */
 export let app;
 
-const plugins = [CollapseOnEscape(), ForceRefresh()];
+const plugins = [CollapseOnEscape(), ForceRefresh(), SoftBreak()];
 
 class App extends Component {
   state = {
@@ -62,42 +63,37 @@ class App extends Component {
       return "Loading...";
     }
     return (
-      <html lang="en">
-        <head />
-        <body>
-          <div className="app-container">
-            <div className="toolbar-container">
-              <Toolbar state={this.state} editor={this.editor} />
-            </div>
-            <div className="editor-container">
-              <Editor
-                spellCheck
-                autoFocus
-                placeholder="Enter some text..."
-                value={this.state.value}
-                ref={this.ref}
-                onPaste={onPaste}
-                onChange={onChange}
-                onKeyDown={onKeyDown}
-                renderMark={renderMark}
-                renderNode={renderNode}
-                plugins={plugins}
-              />
-            </div>
-            <div className="comment-panel-container">
-              <CommentPanel
-                comments={this.state.comments}
-                scanDocument={this.scanDocument}
-                setActiveFilter={this.setActiveFilter}
-                ref={panel => (this.panel = panel)}
-              />
-            </div>
-            <div className="video-container">
-              <Video />
-            </div>
-          </div>
-        </body>
-      </html>
+      <div className="app-container">
+        <div className="toolbar-container">
+          <Toolbar state={this.state} editor={this.editor} />
+        </div>
+        <div className="editor-container">
+          <Editor
+            spellCheck
+            autoFocus
+            placeholder="Enter some text..."
+            value={this.state.value}
+            ref={this.ref}
+            onPaste={onPaste}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            renderMark={renderMark}
+            renderNode={renderNode}
+            plugins={plugins}
+          />
+        </div>
+        <div className="comment-panel-container">
+          <CommentPanel
+            comments={this.state.comments}
+            scanDocument={this.scanDocument}
+            setActiveFilter={this.setActiveFilter}
+            ref={panel => (this.panel = panel)}
+          />
+        </div>
+        <div className="video-container">
+          <Video />
+        </div>
+      </div>
     );
   }
 
@@ -118,14 +114,20 @@ class App extends Component {
       const data = this.generateData(node);
 
       // If a duplicate node is created (such as by line breaks), store in a map.
-      // Push unique comments to commentsArray, and for now, just ignore the duplicate.
       const currKey = data.uniqueKey;
       if (!keyToSameCommentsMap.has(currKey)) {
         keyToSameCommentsMap.set(currKey, [data]);
-        updatedComments.push(data);
       } else {
         keyToSameCommentsMap.get(currKey).push(data);
       }
+    }
+
+    for (const dataList of keyToSameCommentsMap.values()) {
+      let rootData = dataList[0];
+      for (let i = 1; i < dataList.length; i++) {
+        rootData.fragments.push(dataList[i]);
+      }
+      updatedComments.push(rootData);
     }
 
     this.setState({ comments: updatedComments });
@@ -142,20 +144,20 @@ class App extends Component {
     data.tags = node.data.get("tags");
     data.timeStamp = node.data.get("timeStamp");
     data.suggestion = node.data.get("suggestion");
+    data.fragments = [];
     return data;
   };
 
   /* For rendering different colors. activeFilter state is used in renderNode().
-     Blurring requiring to render entire document? (Otherwise, it'll only render the node at the current
-     selection.) */
+      Refresh is necessary to rerender all nodes.  */
   setActiveFilter = filter => {
     this.setState({ activeFilter: filter }, () => this.editor.refresh());
   };
 
   /* Call expandComment() passed up from commentPanel, passed to renderNode */
-  expandCommentFromInline = id => {
-    this.panel.expandCommentAndFocus(id, true);
-  };
+  // expandCommentFromInline = id => {
+  //   this.panel.expandCommentAndFocus(id);
+  // };
 }
 
 export default App;
