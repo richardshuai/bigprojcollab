@@ -63,42 +63,37 @@ class App extends Component {
       return "Loading...";
     }
     return (
-      <html lang="en">
-        <head />
-        <body>
-          <div className="app-container">
-            <div className="toolbar-container">
-              <Toolbar state={this.state} editor={this.editor} />
-            </div>
-            <div className="editor-container">
-              <Editor
-                spellCheck
-                autoFocus
-                placeholder="Enter some text..."
-                value={this.state.value}
-                ref={this.ref}
-                onPaste={onPaste}
-                onChange={onChange}
-                onKeyDown={onKeyDown}
-                renderMark={renderMark}
-                renderNode={renderNode}
-                plugins={plugins}
-              />
-            </div>
-            <div className="comment-panel-container">
-              <CommentPanel
-                comments={this.state.comments}
-                scanDocument={this.scanDocument}
-                setActiveFilter={this.setActiveFilter}
-                ref={panel => (this.panel = panel)}
-              />
-            </div>
-            <div className="video-container">
-              <Video />
-            </div>
-          </div>
-        </body>
-      </html>
+      <div className="app-container">
+        <div className="toolbar-container">
+          <Toolbar state={this.state} editor={this.editor} />
+        </div>
+        <div className="editor-container">
+          <Editor
+            spellCheck
+            autoFocus
+            placeholder="Enter some text..."
+            value={this.state.value}
+            ref={this.ref}
+            onPaste={onPaste}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            renderMark={renderMark}
+            renderNode={renderNode}
+            plugins={plugins}
+          />
+        </div>
+        <div className="comment-panel-container">
+          <CommentPanel
+            comments={this.state.comments}
+            scanDocument={this.scanDocument}
+            setActiveFilter={this.setActiveFilter}
+            ref={panel => (this.panel = panel)}
+          />
+        </div>
+        <div className="video-container">
+          <Video />
+        </div>
+      </div>
     );
   }
 

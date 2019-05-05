@@ -24,15 +24,25 @@ class FilterByTabs extends Component {
     }
 
     return (
-      <Tabs
-        value={this.state.value}
-        onChange={this.onChangeTab}
-        variant="fullWidth"
-      >
-        {options.map(option => {
-          return <Tab label={option.props.label} style={this.tabStyles} />;
-        })}
-      </Tabs>
+      <div>
+        <Tabs
+          style={this.tabsStyles}
+          value={this.state.value}
+          onChange={this.onChangeTab}
+          variant="fullWidth"
+        >
+          {options.map((option, index) => {
+            return (
+              <Tab
+                label={option.props.label}
+                style={this.tabStyles}
+                key={index}
+              />
+            );
+          })}
+        </Tabs>
+        <div style={{ height: "50px" }} />
+      </div>
     );
   }
 
@@ -42,6 +52,9 @@ class FilterByTabs extends Component {
   };
 
   //Styling
+  tabsStyles = {
+    position: "fixed"
+  };
   tabStyles = {
     minWidth: 100 / this.state.filterOptions.length + "%"
   };
