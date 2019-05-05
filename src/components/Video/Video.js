@@ -1,12 +1,9 @@
 import React, { Component } from "react";
+import Webcam from "react-webcam";
 
 export class Video extends Component {
   render() {
-    return (
-      <div>
-        <h3> Video </h3>
-      </div>
-    );
+    return <Webcam width="150" height="200" />;
   }
 }
 
