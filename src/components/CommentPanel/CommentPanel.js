@@ -5,6 +5,8 @@ import AddCommentForm from "./CommentPanelComponents/AddCommentForm";
 import CommentBox from "./CommentPanelComponents/CommentBox";
 import { app } from "../../App";
 
+import { getData } from "../Utils/GetData";
+
 export let panel;
 class CommentPanel extends Component {
   state = {
@@ -52,6 +54,7 @@ class CommentPanel extends Component {
     );
   }
 
+  /* Filter functions for SortByDropdown and FilterByDropdown */
   setSortFn = sortFn => {
     this.setState({
       sortFn: sortFn
@@ -79,39 +82,48 @@ class CommentPanel extends Component {
     });
   };
 
-  // Obtains the node, using the comment's uniqueKey
-  // Warning: uniqueKey isn't unique with splitting lines.
-  expandCommentAndFocus = async (id, fromInline) => {
+  /* Handling clicking the commentBox from the commentPanel.
+    Expands, highlights, and focuses on the comment */
+  expandCommentAndFocus = async id => {
     const { editor } = app;
+
+    if (this.state.expandedID === id) {
+      // Do nothing but refocus if already is expanded
+      app.editor.focus();
+      return;
+    }
+
+    // Warning: uniqueKey isn't unique with splitting lines.
     const newComment = this.props.comments.filter(
       comment => comment.uniqueKey === id
     )[0];
-    const newData = this.getData(newComment);
+    const newData = getData(newComment);
     const newNode = editor.value.document.findDescendant(
       node =>
         node.object === "inline" &&
         node.data.get("uniqueKey") === newComment.uniqueKey
     );
 
-    if (this.state.expandedID === id) {
-      // Do nothing but refocus if already is expanded
-      app.editor.focus();
-      return;
-    } else if (this.state.expandedID === "") {
+    if (this.state.expandedID === "") {
       // Set to focused if no previously focused exists.
       this.setState({ expandedID: id });
       newData.isFocused = true;
     } else {
       // Set the isFocused for the previously focused comment to false, newData.isFocused to true.
+      // Get comment data and change isFocused.
       const prevData = this.props.comments.filter(
         comment => comment.uniqueKey === this.state.expandedID
       )[0];
       prevData.isFocused = false;
+
+      // Get node by uniqueKey
       const prevNode = editor.value.document.findDescendant(
         node =>
           node.object === "inline" &&
           node.data.get("uniqueKey") === prevData.uniqueKey
       );
+
+      // Replace node by node key
       editor.replaceNodeByKey(prevNode.key, {
         object: "inline",
         type: "comment",
@@ -119,9 +131,12 @@ class CommentPanel extends Component {
         nodes: prevNode.nodes
       });
 
+      // Set newData to be focused, update expandedID
       this.setState({ expandedID: id });
       newData.isFocused = true;
     }
+
+    // Replace newData with a true isFocused
     await editor.replaceNodeByKey(newNode.key, {
       object: "inline",
       type: "comment",
@@ -129,31 +144,6 @@ class CommentPanel extends Component {
       nodes: newNode.nodes
     });
     this.pointToComment(newNode);
-  };
-
-  // Definitely modularize this later.
-  // Maybe change the name of isFocused so it doesn't clash with Slate?
-  getData = prevComment => {
-    const uniqueKey = prevComment.uniqueKey;
-    const start = prevComment.start;
-    const end = prevComment.end;
-    const quoted = prevComment.quoted;
-    const tags = prevComment.tags;
-    const timeStamp = prevComment.timeStamp;
-    const suggestion = prevComment.suggestion;
-    const isFocused = prevComment.isFocused;
-
-    const data = {
-      uniqueKey,
-      start,
-      end,
-      quoted,
-      tags,
-      timeStamp,
-      suggestion,
-      isFocused
-    };
-    return data;
   };
 
   pointToComment = async target => {

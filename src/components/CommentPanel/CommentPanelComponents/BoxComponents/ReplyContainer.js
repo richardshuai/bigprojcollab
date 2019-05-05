@@ -25,7 +25,7 @@ class ReplyContainer extends Component {
       );
     }
 
-    /* Show only replies that are past the current index */
+    /* Show only replies that are "past" the current index of comments to see */
     let visibleReplies = null;
     if (this.props.viewingReplies) {
       visibleReplies = (

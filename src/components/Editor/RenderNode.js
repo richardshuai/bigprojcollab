@@ -141,6 +141,7 @@ const onClickLink = function(href, event) {
 };
 
 const onClickComment = function(commentData, event) {
-  app.expandCommentFromInline(commentData.get("uniqueKey"));
-  event.stopPropagation();
+  // app.expandCommentFromInline(commentData.get("uniqueKey"));
+
+  event.stopPropagation(); // Stops propagation for nested inlines
 };
