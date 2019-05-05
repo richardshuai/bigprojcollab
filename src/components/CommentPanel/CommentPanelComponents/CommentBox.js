@@ -9,7 +9,7 @@ import EditCommentForm from "./BoxComponents/EditCommentForm";
 class CommentBox extends Component {
   state = {
     editing: false,
-    quotedCollapsed: true,
+    quotedIsCollapsed: true,
     replies: [],
     viewingReplies: false,
     numVisibleReplies: 1
@@ -81,19 +81,20 @@ class CommentBox extends Component {
           <h6 className="card-subtitle mb-2 text-muted">
             {new Date(this.props.comment.timeStamp).toString()}
           </h6>
-          <p className="card-text">
+          <div className="card-text">
             <em>
-              {this.state.quotedCollapsed
+              {this.state.quotedIsCollapsed
                 ? this.truncateQuoted()
                 : this.props.comment.quoted}
+              {this.displayFragments()}
             </em>
-          </p>
+          </div>
           <button
             type="button"
             className="btn btn-secondary"
             onClick={this.toggleQuotedCollapse}
           >
-            {this.state.quotedCollapsed ? "Expand" : "Collapse"}
+            {this.state.quotedIsCollapsed ? "Expand" : "Collapse"}
           </button>
           <p className="card-text">{this.props.comment.suggestion}</p>
           <p className="card-text">
@@ -110,11 +111,11 @@ class CommentBox extends Component {
   };
 
   onClickCommentBox = () => {
-    this.props.expandCommentAndFocus(this.props.id, false);
+    this.props.expandCommentAndFocus(this.props.id);
   };
 
   toggleQuotedCollapse = event => {
-    this.setState({ quotedCollapsed: !this.state.quotedCollapsed });
+    this.setState({ quotedIsCollapsed: !this.state.quotedIsCollapsed });
     event.stopPropagation();
   };
 
@@ -123,6 +124,14 @@ class CommentBox extends Component {
       return this.props.comment.quoted.slice(0, 30) + "...";
     }
     return this.props.comment.quoted;
+  };
+
+  displayFragments = () => {
+    if (!this.state.quotedIsCollapsed) {
+      return this.props.comment.fragments.map(fragment => (
+        <div>{fragment.quoted}</div>
+      ));
+    }
   };
 
   addReply = replyText => {

@@ -67,11 +67,39 @@ class AddCommentForm extends Component {
     );
   }
 
+  handleCommentChange = event => {
+    const value = event.target.value;
+    this.setState({
+      value: value
+    });
+  };
+
+  handleCheckboxChange = event => {
+    const target = event.target;
+    const value = target.checked;
+    const name = target.name;
+    if (value === true) {
+      if (!this.state.tags.includes(name)) {
+        this.setState(prevState => ({
+          tags: [...prevState.tags, name]
+        }));
+      }
+    } else {
+      this.state.tags.splice(this.state.tags.indexOf(name), 1);
+    }
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.finishCommenting();
+    this.getAndWrapCommentData();
+  };
+
+  /* Uses the temporary inline to get real-time selection, and then rewraps. */
   getAndWrapCommentData = async () => {
     const { editor } = app;
     const { value } = editor;
 
-    // Not necessary to filter if there's only one comment being added at a time.
     // Warning: uniqueKey isn't unique with splitting lines.
     const tempInline = value.document.findDescendant(
       node =>
@@ -110,34 +138,6 @@ class AddCommentForm extends Component {
     });
 
     this.props.scanDocument();
-  };
-
-  handleCommentChange = event => {
-    const value = event.target.value;
-    this.setState({
-      value: value
-    });
-  };
-
-  handleCheckboxChange = event => {
-    const target = event.target;
-    const value = target.checked;
-    const name = target.name;
-    if (value === true) {
-      if (!this.state.tags.includes(name)) {
-        this.setState(prevState => ({
-          tags: [...prevState.tags, name]
-        }));
-      }
-    } else {
-      this.state.tags.splice(this.state.tags.indexOf(name), 1);
-    }
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.finishCommenting();
-    this.getAndWrapCommentData();
   };
 }
 export default AddCommentForm;
