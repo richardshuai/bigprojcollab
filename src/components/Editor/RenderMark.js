@@ -22,6 +22,12 @@ export const renderMark = (props, editor, next) => {
           {children}
         </font>
       );
+    case "textColor":
+      return (
+        <font color={mark.data.get("color")} {...attributes}>
+          {children}
+        </font>
+      );
     case "filterAllDecor":
       return (
         <span style={{ backgroundColor: "#000000" }} {...attributes}>
