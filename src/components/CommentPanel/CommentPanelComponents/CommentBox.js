@@ -50,7 +50,7 @@ class CommentBox extends Component {
     }
 
     return (
-      <div className="card" onClick={this.onClickComment}>
+      <div className="card" onClick={this.onClickCommentBox}>
         <div className="card-body">
           <div class="row">
             <div class="col-md-10">
@@ -109,7 +109,7 @@ class CommentBox extends Component {
     e.stopPropagation();
   };
 
-  onClickComment = () => {
+  onClickCommentBox = () => {
     this.pointToComment();
     this.props.expandComment(this.props.id);
     this.setState({ numVisibleReplies: 1 });

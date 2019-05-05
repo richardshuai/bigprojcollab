@@ -89,6 +89,7 @@ class App extends Component {
                 comments={this.state.comments}
                 scanDocument={this.scanDocument}
                 setActiveFilter={this.setActiveFilter}
+                ref={panel => (this.panel = panel)}
               />
             </div>
             <div className="video-container">
@@ -147,6 +148,11 @@ class App extends Component {
      selection.) */
   setActiveFilter = filter => {
     this.setState({ activeFilter: filter }, () => this.editor.refresh());
+  };
+
+  /* Call expandComment() passed up from commentPanel, passed to renderNode */
+  expandCommentFromInline = id => {
+    this.panel.expandComment(id);
   };
 }
 

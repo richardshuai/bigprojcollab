@@ -95,19 +95,31 @@ const displayTagProperties = props => {
     );
   } else if (filter === "Content") {
     return (
-      <span style={{ backgroundColor: "#FA84FA" }} {...attributes}>
+      <span
+        style={{ backgroundColor: "#FA84FA" }}
+        onClick={onClickComment.bind(this, node.data)}
+        {...attributes}
+      >
         {children}
       </span>
     );
   } else if (filter === "Theme") {
     return (
-      <span style={{ backgroundColor: "#84E3FA" }} {...attributes}>
+      <span
+        style={{ backgroundColor: "#84E3FA" }}
+        onClick={onClickComment.bind(this, node.data)}
+        {...attributes}
+      >
         {children}
       </span>
     );
   } else if (filter === "Grammar") {
     return (
-      <span style={{ backgroundColor: "#84FAA8" }} {...attributes}>
+      <span
+        style={{ backgroundColor: "#84FAA8" }}
+        onClick={onClickComment.bind(this, node.data)}
+        {...attributes}
+      >
         {children}
       </span>
     );
@@ -119,6 +131,5 @@ const onClickLink = function(href, event) {
 };
 
 const onClickComment = function(commentData, event) {
-  const suggestion = commentData.get("suggestion");
-  alert("Comment: " + suggestion);
+  app.expandCommentFromInline(commentData.get("uniqueKey"));
 };
