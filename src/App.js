@@ -154,7 +154,7 @@ class App extends Component {
 
   /* Call expandComment() passed up from commentPanel, passed to renderNode */
   expandCommentFromInline = id => {
-    this.panel.expandComment(id);
+    this.panel.expandCommentAndFocus(id, true);
   };
 }
 

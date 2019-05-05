@@ -107,6 +107,7 @@ class EditCommentForm extends Component {
     const tags = this.state.newTags;
     const timeStamp = prevComment.timeStamp;
     const suggestion = newSuggestion;
+    const isFocused = false;
 
     const data = {
       uniqueKey,
@@ -115,7 +116,8 @@ class EditCommentForm extends Component {
       quoted,
       tags,
       timeStamp,
-      suggestion
+      suggestion,
+      isFocused
     };
     return data;
   };

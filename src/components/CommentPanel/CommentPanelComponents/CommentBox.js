@@ -110,22 +110,7 @@ class CommentBox extends Component {
   };
 
   onClickCommentBox = () => {
-    this.pointToComment();
-    this.props.expandComment(this.props.id);
-    this.setState({ numVisibleReplies: 1 });
-  };
-
-  // Obtains the node, using the comment's uniqueKey
-  // Warning: uniqueKey isn't unique with splitting lines.
-  pointToComment = () => {
-    const editor = app.editor;
-    const target = editor.value.document.findDescendant(
-      node =>
-        node.object === "inline" &&
-        node.data.get("uniqueKey") === this.props.comment.uniqueKey
-    );
-    editor.focus();
-    editor.moveToStartOfNode(target);
+    this.props.expandCommentAndFocus(this.props.id, false);
   };
 
   toggleQuotedCollapse = event => {

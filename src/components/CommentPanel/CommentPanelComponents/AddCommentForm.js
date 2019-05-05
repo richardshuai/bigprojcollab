@@ -88,6 +88,7 @@ class AddCommentForm extends Component {
     const tags = this.state.tags;
     const suggestion = this.state.value;
     const timeStamp = date.getTime();
+    const isFocused = false;
 
     const data = {
       uniqueKey,
@@ -96,7 +97,8 @@ class AddCommentForm extends Component {
       quoted,
       tags,
       timeStamp,
-      suggestion
+      suggestion,
+      isFocused
     };
 
     // Use the real key to find node, not the data.uniqueKey

@@ -82,6 +82,17 @@ const displayTagProperties = props => {
   const { attributes, children, node } = props;
 
   const filter = app.state.activeFilter;
+  if (node.data.get("isFocused")) {
+    return (
+      <span
+        style={{ backgroundColor: "#BBC400" }}
+        onClick={onClickComment.bind(this, node.data)}
+        {...attributes}
+      >
+        {children}
+      </span>
+    );
+  }
   if (filter === "All") {
     return (
       <span
