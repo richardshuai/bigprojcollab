@@ -55,7 +55,7 @@ class AddCommentForm extends Component {
           placeholder="Here's my comment"
           value={this.state.value}
           onChange={this.handleCommentChange}
-          onKeyPress={this.onInputKeyPress}
+          onKeyDown={this.onInputKeyDown}
           autoFocus
           InputProps={{
             startAdornment: (
@@ -87,11 +87,14 @@ class AddCommentForm extends Component {
     );
   }
 
-  /* Allows for enter to be pressed to submit a comment */
-  onInputKeyPress = e => {
+  /* Allows for key shortcuts to be pressed to submit or cancel */
+  onInputKeyDown = e => {
     if (e.key === "Enter") {
-      this.handleSubmit(e);
       e.preventDefault();
+      this.handleSubmit(e);
+    } else if (e.keyCode === 27) {
+      e.preventDefault();
+      this.handleCancel(e);
     }
   };
 
@@ -103,7 +106,7 @@ class AddCommentForm extends Component {
         node.data.get("uniqueKey") === this.state.tempKey
     );
 
-    editor.unwrapInlineByKey(tempInline.key);
+    editor.unwrapInlineByKey(tempInline.key, "tempAddComment");
     this.props.finishCommenting();
   };
 
