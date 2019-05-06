@@ -13,6 +13,7 @@ import { renderNode } from "./components/Editor/RenderNode";
 import { onKeyDown } from "./components/Editor/OnKeyDown";
 import { onChange } from "./components/Editor/OnChange";
 import { onPaste } from "./components/Editor/OnPaste";
+import { onSelectionChange } from "./components/Editor/OnSelectionChange";
 
 /* Initial value */
 import initialValue from "./initialValue.json";
@@ -51,6 +52,9 @@ class App extends Component {
     // this.setState({ socket: socket, response: true });
 
     // const scanner = setInterval(() => this.scanDocument(), 2000);
+    window.document.addEventListener("selectionchange", e =>
+      onSelectionChange(e, this.editor)
+    );
     setInterval(() => this.scanDocument(), 2000);
   }
 
@@ -144,6 +148,7 @@ class App extends Component {
     data.tags = node.data.get("tags");
     data.timeStamp = node.data.get("timeStamp");
     data.suggestion = node.data.get("suggestion");
+    data.isFocused = false;
     data.fragments = [];
     return data;
   };
@@ -155,9 +160,13 @@ class App extends Component {
   };
 
   /* Call expandComment() passed up from commentPanel, passed to renderNode */
-  // expandCommentFromInline = id => {
-  //   this.panel.expandCommentAndFocus(id);
-  // };
+  expandCommentFromInline = node => {
+    this.panel.expandCommentAndFocus(node.data.get("uniqueKey"), false);
+  };
+
+  unexpandCommentFromInline = () => {
+    this.panel.unexpandComment();
+  };
 }
 
 export default App;

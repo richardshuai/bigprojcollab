@@ -7,6 +7,7 @@ export const getData = comment => {
   const timeStamp = comment.timeStamp;
   const suggestion = comment.suggestion;
   const isFocused = comment.isFocused;
+  const fragments = comment.fragments;
 
   const data = {
     uniqueKey,
@@ -16,7 +17,8 @@ export const getData = comment => {
     tags,
     timeStamp,
     suggestion,
-    isFocused
+    isFocused,
+    fragments
   };
   return data;
 };

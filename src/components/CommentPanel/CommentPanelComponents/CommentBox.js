@@ -4,6 +4,7 @@ import Card from "@material-ui/core/Card";
 import ReplyForm from "./BoxComponents/ReplyForm";
 import ReplyContainer from "./BoxComponents/ReplyContainer";
 import EditCommentForm from "./BoxComponents/EditCommentForm";
+import shortid from "shortid";
 
 class CommentBox extends Component {
   state = {
@@ -48,6 +49,15 @@ class CommentBox extends Component {
       replyContainer = null;
     }
 
+    /* Generate text with the fragments included */
+    let quoted = this.props.comment.quoted + this.displayFragments();
+    let processedQuote = quoted.split("\n").map(fragQuote => (
+      <span key={shortid.generate()}>
+        {fragQuote}
+        <br />
+      </span>
+    ));
+
     return (
       <div className="card" onClick={this.onClickCommentBox}>
         <div className="card-body">
@@ -83,9 +93,8 @@ class CommentBox extends Component {
           <div className="card-text">
             <em>
               {this.state.quotedIsCollapsed
-                ? this.truncateQuoted()
-                : this.props.comment.quoted}
-              {this.displayFragments()}
+                ? this.truncate(quoted)
+                : processedQuote}
             </em>
           </div>
           <button
@@ -110,7 +119,7 @@ class CommentBox extends Component {
   };
 
   onClickCommentBox = () => {
-    this.props.expandCommentAndFocus(this.props.id);
+    this.props.pointToComment(this.props.id);
   };
 
   toggleQuotedCollapse = event => {
@@ -118,18 +127,20 @@ class CommentBox extends Component {
     event.stopPropagation();
   };
 
-  truncateQuoted = () => {
-    if (this.props.comment.quoted.length > 30) {
-      return this.props.comment.quoted.slice(0, 30) + "...";
+  truncate = quoted => {
+    if (quoted.length > 30 || quoted.includes("\n")) {
+      return quoted.slice(0, 30) + "...";
     }
-    return this.props.comment.quoted;
+    return quoted;
   };
 
   displayFragments = () => {
-    if (!this.state.quotedIsCollapsed) {
-      return this.props.comment.fragments.map(fragment => (
-        <div>{fragment.quoted}</div>
-      ));
+    if (this.props.comment.fragments.length > 0) {
+      return this.props.comment.fragments
+        .map(fragment => fragment.quoted)
+        .join("");
+    } else {
+      return "";
     }
   };
 

@@ -82,6 +82,7 @@ const displayTagProperties = props => {
   const { attributes, children, node } = props;
 
   const filter = app.state.activeFilter;
+
   if (node.data.get("isFocused")) {
     return (
       <span

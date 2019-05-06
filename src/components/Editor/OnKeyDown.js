@@ -8,6 +8,10 @@ export const onKeyDown = async (event, editor, next) => {
     const type = hotkeyProps.type;
     document.getElementById(type).click();
   }
+  /* For debugging for now */
+  if (event.ctrlKey) {
+    console.log(JSON.stringify(editor.value.document, null, 2));
+  }
 
   return next();
 };
