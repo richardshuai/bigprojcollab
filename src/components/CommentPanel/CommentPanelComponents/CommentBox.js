@@ -119,7 +119,7 @@ class CommentBox extends Component {
   };
 
   onClickCommentBox = () => {
-    this.props.pointToComment(this.props.comment);
+    this.props.expandCommentAndFocus(this.props.id);
   };
 
   toggleQuotedCollapse = event => {

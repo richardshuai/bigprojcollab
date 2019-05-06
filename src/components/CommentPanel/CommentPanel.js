@@ -30,7 +30,7 @@ class CommentPanel extends Component {
           <CommentBox
             comment={comment}
             scanDocument={this.props.scanDocument}
-            pointToComment={this.pointToComment}
+            expandCommentAndFocus={this.expandCommentAndFocus}
             isExpanded={this.state.expandedID === comment.uniqueKey}
             key={comment.uniqueKey}
             id={comment.uniqueKey}
@@ -168,6 +168,7 @@ class CommentPanel extends Component {
         nodes: newNodes.get(i + 1).nodes
       });
     }
+    this.pointToComment(newComment);
   };
 
   /* Takes in a comment (data) and points at the node */

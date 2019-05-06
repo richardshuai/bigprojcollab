@@ -1,5 +1,6 @@
 import React from "react";
 import { app } from "../../App";
+import CommentWrapper from "./CommentWrapper";
 
 export const renderNode = function(props, editor, next) {
   const { attributes, children, node } = props;
@@ -85,13 +86,9 @@ const displayTagProperties = props => {
 
   if (node.data.get("isFocused")) {
     return (
-      <span
-        style={{ backgroundColor: "#BBC400" }}
-        onClick={onClickComment.bind(this, node.data)}
-        {...attributes}
-      >
+      <CommentWrapper style={{ backgroundColor: "#BBC400" }} {...attributes}>
         {children}
-      </span>
+      </CommentWrapper>
     );
   }
   if (filter === "All") {
