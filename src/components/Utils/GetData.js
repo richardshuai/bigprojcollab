@@ -1,3 +1,5 @@
+import { app } from "../../App";
+
 export const getData = comment => {
   const uniqueKey = comment.uniqueKey;
   const start = comment.start;

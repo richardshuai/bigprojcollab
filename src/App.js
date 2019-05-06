@@ -52,9 +52,9 @@ class App extends Component {
     // this.setState({ socket: socket, response: true });
 
     // const scanner = setInterval(() => this.scanDocument(), 2000);
-    window.document.addEventListener("selectionchange", e =>
-      onSelectionChange(e, this.editor)
-    );
+    // window.document.addEventListener("selectionchange", e =>
+    //   onSelectionChange(e, this.editor)
+    // );
     setInterval(() => this.scanDocument(), 2000);
   }
 
@@ -161,7 +161,7 @@ class App extends Component {
 
   /* Call expandComment() passed up from commentPanel, passed to renderNode */
   expandCommentFromInline = node => {
-    this.panel.expandCommentAndFocus(node.data.get("uniqueKey"), false);
+    this.panel.expandCommentAndFocus(node.data.get("uniqueKey"));
   };
 
   unexpandCommentFromInline = () => {
