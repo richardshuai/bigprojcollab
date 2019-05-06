@@ -5,7 +5,12 @@ export const renderMark = (props, editor, next) => {
 
   switch (mark.type) {
     case "bold":
-      return <strong {...attributes}>{children}</strong>;
+      // return <strong {...attributes}>{children}</strong>;
+      return (
+        <span style={{ backgroundColor: "#FFFF33" }} {...attributes}>
+          {children}
+        </span>
+      );
     case "italic":
       return <em {...attributes}>{children}</em>;
     case "underlined":

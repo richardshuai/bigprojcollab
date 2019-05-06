@@ -17,10 +17,13 @@ export const onSelectionChange = (event, editor) => {
   /* There should only ever be one bottom-most leaf inline in a collapsed range */
   const leafInlines = value.document.getLeafInlinesAtRange(collapsedToFocus);
   if (leafInlines.size === 1) {
-    const commentNode = getParentComment(leafInlines.first());
+    const commentNode = getLeafComment(leafInlines.first());
     if (commentNode) {
-      console.log("?leaf detected?");
-      app.expandCommentFromInline(commentNode);
+      console.log("Leaf inline detected?");
+      console.log(
+        "Bottommost key should be: " + commentNode.data.get("uniqueKey")
+      );
+      // app.expandCommentFromInline(commentNode);
       event.preventDefault();
     }
   } else if (leafInlines.size > 1) {
@@ -28,11 +31,11 @@ export const onSelectionChange = (event, editor) => {
   } else {
     event.preventDefault();
     console.log("no leaf inline");
-    app.unexpandCommentFromInline();
+    // app.unexpandCommentFromInline();
   }
 };
 
-const getParentComment = node => {
+const getLeafComment = node => {
   while (node && !Document.isDocument(node)) {
     if (node.type === "comment") {
       return node;
@@ -41,3 +44,5 @@ const getParentComment = node => {
   }
   return;
 };
+
+const getParentComment = node => {};

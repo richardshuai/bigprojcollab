@@ -30,7 +30,7 @@ class CommentPanel extends Component {
           <CommentBox
             comment={comment}
             scanDocument={this.props.scanDocument}
-            expandCommentAndFocus={this.expandCommentAndFocus}
+            pointToComment={this.pointToComment}
             isExpanded={this.state.expandedID === comment.uniqueKey}
             key={comment.uniqueKey}
             id={comment.uniqueKey}
@@ -111,7 +111,7 @@ class CommentPanel extends Component {
 
     if (this.state.expandedID === "") {
       // Set to focused if no previously focused exists.
-      this.setState({ expandedID: id });
+      await this.setState({ expandedID: id });
     } else {
       // Set the isFocused for the previously focused comment to false, newData.isFocused to true.
       // Get comment data and change isFocused.
@@ -128,7 +128,7 @@ class CommentPanel extends Component {
       );
 
       // Replace node by node key
-      editor.replaceNodeByKey(prevNodes.first().key, {
+      await editor.replaceNodeByKey(prevNodes.first().key, {
         object: "inline",
         type: "comment",
         data: prevData,
@@ -138,7 +138,7 @@ class CommentPanel extends Component {
       const prevFragments = prevData.fragments;
       for (let i = 0; i < prevFragments.length; i++) {
         prevFragments[i].isFocused = false;
-        editor.replaceNodeByKey(prevNodes.get(i + 1).key, {
+        await editor.replaceNodeByKey(prevNodes.get(i + 1).key, {
           object: "inline",
           type: "comment",
           data: prevFragments[i],
@@ -147,7 +147,7 @@ class CommentPanel extends Component {
       }
 
       // Set newData to be focused, update expandedID
-      this.setState({ expandedID: id });
+      await this.setState({ expandedID: id });
     }
 
     newData.isFocused = true;
@@ -161,19 +161,22 @@ class CommentPanel extends Component {
     const newFragments = newData.fragments;
     for (let i = 0; i < newFragments.length; i++) {
       newFragments[i].isFocused = true;
-      editor.replaceNodeByKey(newNodes.get(i + 1).key, {
+      await editor.replaceNodeByKey(newNodes.get(i + 1).key, {
         object: "inline",
         type: "comment",
         data: newFragments[i],
         nodes: newNodes.get(i + 1).nodes
       });
     }
-    if (fromClick) {
-      this.pointToComment(newNodes.first());
-    }
   };
 
-  pointToComment = async target => {
+  /* Takes in a comment (data) and points at the node */
+  pointToComment = async comment => {
+    const target = app.editor.value.document.findDescendant(
+      node =>
+        node.object === "inline" &&
+        node.data.get("uniqueKey") === comment.uniqueKey
+    );
     await app.editor.focus();
     app.editor.moveToStartOfNode(target);
   };
