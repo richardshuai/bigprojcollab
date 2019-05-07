@@ -19,10 +19,10 @@ export const onSelectionChange = (event, editor) => {
   if (leafInlines.size === 1) {
     const commentNode = getLeafComment(leafInlines.first());
     if (commentNode) {
-      console.log("Leaf inline detected?");
-      console.log(
-        "Bottommost key should be: " + commentNode.data.get("uniqueKey")
-      );
+      // console.log("Leaf inline detected?");
+      // console.log(
+      //   "Bottommost key should be: " + commentNode.data.get("uniqueKey")
+      // );
       // app.expandCommentFromInline(commentNode);
       event.preventDefault();
     }
@@ -30,7 +30,7 @@ export const onSelectionChange = (event, editor) => {
     throw RangeError("More than one leafInline in collapsed range.");
   } else {
     event.preventDefault();
-    console.log("no leaf inline");
+    // console.log("no leaf inline");
     // app.unexpandCommentFromInline();
   }
 };

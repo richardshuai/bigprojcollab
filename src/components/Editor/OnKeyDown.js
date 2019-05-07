@@ -12,6 +12,12 @@ export const onKeyDown = async (event, editor, next) => {
   if (event.ctrlKey) {
     console.log(JSON.stringify(editor.value.document, null, 2));
   }
-
+  if (event.key === "]") {
+    console.log(JSON.stringify(editor.value.selection, null, 2));
+    event.preventDefault();
+  }
+  if (event.key === "ArrowRight") {
+    console.log("HI");
+  }
   return next();
 };
