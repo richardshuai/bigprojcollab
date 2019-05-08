@@ -13,7 +13,6 @@ export const onChange = async change => {
     operation => operation.type === "set_selection"
   );
   console.log(JSON.stringify(selectionOps, null, 2));
-  // console.log("text" + JSON.stringify(app.editor.value.focusText));
 
   if (selectionOps.size >= 1) {
     handleSelectionChange(selectionOps);
@@ -42,8 +41,6 @@ const handleSelectionChange = async selectionOps => {
   if (isFocusNegative) {
     await app.editor.moveBackward(1);
   }
-  // console.log("currFocus information");
-  // console.log(JSON.stringify(currFocus, null, 2));
 
   /* There should only ever be one bottom-most leaf inline in a collapsed range */
   const leafInlines = value.document.getLeafInlinesAtRange(collapsedToFocus);
